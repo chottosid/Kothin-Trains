@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-white portfolio-navbar gradient" style="color: rgb(118,35,35);padding: 18.2px 0px;background: linear-gradient(47deg, rgb(240,255,234), rgb(240,255,234) 99%);">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarNav" style="text-align: right;">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="http://127.0.0.1:8000/" style="color: #070606;background-color: #f5fff1;padding: 0px;">Home</a></li>
+                <li class="nav-item" style="color: #070606;"><a class="nav-link active link link-four pulse-grow-on-hover" href="login" style="color: #070606;background-color: #f5fff1;padding: 0px;">Log in</a></li>
+                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="registration" style="color: #070606;background-color: #f5fff1;padding: 0px;">Register</a></li>
+                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="updateinfo" style="color: #070606;background-color: #f5fff1;padding: 0px;">Dashboard</a></li>
+                <li class="nav-item" style="color: #070606;"><a class="nav-link active link link-four pulse-grow-on-hover" href="contactus" style="color: #070606;background-color: #f5fff1;padding: 0px;">Contact us</a></li>
+                <li class="nav-item" style="cursor:pointer;padding-right: 0px;"><a class="nav-link active link link-four pulse-grow-on-hover" onclick="logout()" style="color: #070606;background-color: #f5fff1;padding: 0px;">Log out</a></li>
+            </ul>
+    </div>
+        </div>
+    </nav>
+    
+    <form action="" method="post" >
+        {%  csrf_token %}
+        <h2 class="sr-only">Login Form</h2>
+        <div class="illustration" style="padding: 0px;"><i class="icon ion-search" style="color: #58a25b;"></i></div>
+        <small class="form-text text-light">Route</small>
+
+            <div class="dropdown float-left">
+                <select class="form-control" style="filter: brightness(200%) contrast(200%);padding: 0px;margin-left: 5px" name="from" required>
+                <option  hidden="" value="">From</option>
+                    {% for name in names %}
+                <option style="color: #000000">{{ name.NAME }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="dropdown float-right" style="width: 165px;height: 38px;text-align: left;margin-bottom: 4px">
+                <select class="form-control" style="filter: brightness(200%) contrast(200%);padding: 0px;margin-left: 4px" name="to" required>
+                <option  hidden="" value="">To</option>
+                    {% for name in names %}
+                <option style="color: #000000">{{ name.NAME }}</option>
+                    {% endfor %}
+            </select>
+            </div>
+
+        <div class="form-group" style="padding-top: 50px;padding-bottom: 35px;">
+            <small class="form-text text-muted">Date</small>
+            <input class="form-control float-left" required type="date" name= "date" min="{{ date }}" max="{{ lastdate }}" style="opacity: 1;width: 165px;background: rgba(56,66,74,0);color: rgb(9, 12, 14);filter: brightness(200%) contrast(104%);padding-left: 7px">
+            <div class="dropdown float-right">
+                <select class="form-control" name="class" required>
+                <option  hidden="" value="">Choose Class</option>
+                <option style="color: #000000">SNIGDHA</option>
+                <option style="color: #000000">S_CHAIR</option>
+                <option style="color: #000000">SHOVAN</option>
+                </select>
+            </div>
+
+        </div>
+            <small class="form-text text-left text-muted">Passengers</small>
+            <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1" pattern="\d*" title="Input can be only numbers" style="width: 165px;filter: brightness(200%) contrast(200%);">
+            <input class="form-control float-right" type="text" name="child"  required placeholder="Child" maxlength="1" pattern="\d*" title="Input can be only numbers" style="width: 165px;filter: brightness(200%) contrast(200%);padding: 5px">
+
+        <div class="form-group">
+            <label class="float-left">*Maximum 4 seats can be issued</label>
+        </div>
+    <div class="form-group">
+        <button id="demo" class="btn btn-primary btn-block" type="submit">Find</button>
+
+
+
+    </div>
+    </form>
+    
+</body>
+</html>
