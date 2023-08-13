@@ -1,63 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registration</title>
 </head>
 <body>
-    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-white portfolio-navbar gradient" style="color: rgb(118,35,35);padding: 18.2px 0px;background: linear-gradient(47deg, rgb(240,255,234), rgb(240,255,234) 99%);">
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-white portfolio-navbar gradient">
         <div class="container">
-            <div class="collapse navbar-collapse" id="navbarNav" style="text-align: right;">
+            <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="http://127.0.0.1:8000/" style="color: #070606;background-color: #f5fff1;padding: 0px;">Home</a></li>
-                <li class="nav-item" style="color: #070606;"><a class="nav-link active link link-four pulse-grow-on-hover" href="login" style="color: #070606;background-color: #f5fff1;padding: 0px;">Log in</a></li>
-                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="registration" style="color: #070606;background-color: #f5fff1;padding: 0px;">Register</a></li>
-                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="updateinfo" style="color: #070606;background-color: #f5fff1;padding: 0px;">Dashboard</a></li>
-                <li class="nav-item" style="color: #070606;"><a class="nav-link active link link-four pulse-grow-on-hover" href="contactus" style="color: #070606;background-color: #f5fff1;padding: 0px;">Contact us</a></li>
-                <li class="nav-item" style="cursor:pointer;padding-right: 0px;"><a class="nav-link active link link-four pulse-grow-on-hover" onclick="logout()" style="color: #070606;background-color: #f5fff1;padding: 0px;">Log out</a></li>
+                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="http://127.0.0.1:8000/">Home</a></li>
+                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="login" >Log in</a></li>
+                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="registration" >Register</a></li>
+                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="updateinfo" >Dashboard</a></li>
+                <li class="nav-item" ><a class="nav-link active link link-four pulse-grow-on-hover" href="contactus" >Contact us</a></li>
+                <li class="nav-item">Log out</a></li>
             </ul>
-    </div>
-        </div>
+      </div>
     </nav>
 
-    
-    <form action="" method="post" style="max-width: 500px;margin: auto;padding: 40px;box-shadow: 0 2px 10px rgba(0,0,0,.075);border-top: 2px solid #5ea4f3;background-color: #fff;width: 800px;padding-top: 30px;margin-bottom: 0px;">
-        {%  csrf_token %}
-        <h1 style="font-size: 34px;">Registration</h1>
-        <hr style="background: #000000;">
-        <div class="form-group"><label for="name">First Name</label><input class="form-control item" name = "frst" type="text" id="name" maxlength="25" required></div>
-        <div class="form-group"><label for="name">Last Name</label><input class="form-control item" name = "last" type="text" id="name-3" maxlength="25" required></div>
-        <div class="form-group"><label for="name">Date of Birth</label><input class="form-control" name= "dob" type="date" required></div>
-        <div class="form-group"><label for="name">Gender</label>
-             <div class="input-group" >
-                <select class="form-control item" name="gender"  required="required" style="background:white">
-                    <option  hidden="" value="">Choose Gender</option>
-                    <option style="background: white;">Male</option>
-                    <option style="background: white;">Female</option>
-                    <option style="background: white;">Other</option>
+    <form action="" method="post">
+        {% csrf_token %}
+        <h1>Registration</h1>
+        <hr>
+        <div class="form-group">
+            <label for="name">First Name<span>*</span></label>
+            <input class="form-control item" name="frst" type="text" id="name" maxlength="25" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Last Name<span>*</span></label>
+            <input class="form-control item" name="last" type="text" id="name-3" maxlength="25" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Date of Birth<span>*</span></label>
+            <input class="form-control" name="dob" type="date" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Gender<span >*</span></label>
+            <div class="input-group">
+                <select class="form-control item" name="gender" required="required">
+                    <option hidden="" value="">Choose Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option >Other</option>
                 </select>
             </div>
         </div>
+        <div class="form-group">
+            <label for="email">Email<span>*</span></label>
+            <input class="form-control item" type="email" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
         </div>
-        <div class="form-group"><label for="email">Email</label><input class="form-control item" type="email" name = "email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  required></div>
-        <div class="form-group"><label for="name">NID Number</label><input class="form-control" name = "nid" type="text" pattern="\d*" title="Must contain numercial digits only" minlength="10" maxlength="17" required></div>
-        <div class="form-group" style="padding-top: 5px;margin-bottom: 0px;"><label for="name">Address:</label></div>
-        <div class="form-group"><label for="name" style="width: 200px;">House Number</label><input class="form-control float-left item" name = "houseno" type="text" id="name-6" style="width: 200px;"><br><label class="float-right" for="name" style="width: 200px;">Road Number</label><input class="form-control float-right item" name = "roadno"
-                type="text" id="name-5" style="width: 200px;"></div>
-        <div class="form-group"><label for="name" style="width: 200px;">ZIP Code</label><input class="form-control item" name="zip"
-            type="text" id="name-4" style="width: 200px;"></div><br><label class="float-right" for="name" style="width: 200px;">City</label><input class="form-control float-right item" name = "city" type="text" id="name-1" required style="width: 200px;">
-        <div class="form-group"><label for="name">Contact Number</label>
+        <div class="form-group">
+            <label for="name">NID Number<span >*</span></label>
+            <input class="form-control" name="nid" type="text" pattern="\d*" title="Must contain numercial digits only" minlength="10" maxlength="17" required>
+        </div>
+        <div class="form-group">
+            <label for="name">House Number</label>
+            <input class="form-control float-left item" name="houseno" type="text" id="name-6">
+            <label class="float-right" for="name">Road Number</label>
+            <input class="form-control float-right item" name="roadno" type="text" id="name-5" >
+        </div>
+        <div class="form-group">
+            <label for="name">ZIP Code</label>
+            <input class="form-control item" name="zip" type="text" id="name-4" >
+            <label class="float-right" for="name">City<span >*</span></label>
+            <input class="form-control float-right item" name="city" type="text" id="name-1" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Contact Number<span>*</span></label>
             <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">+880</span></div><input class="form-control" name="contact" type="tel" maxlength="10" minlength="10" pattern="\d*" title="Input can be only numbers" required>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">+880</span>
+                </div>
+                <input class="form-control" name="contact" type="tel" minlength="10" maxlength="10" pattern="\d*" title="Input can be only numbers" required>
                 <div class="input-group-append"></div>
             </div>
         </div>
-        <div class="form-group"><label for="password">Password</label><input class="form-control item" name = "password" type="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" maxlength="15" required ></div>
-        <div class="form-group" style="padding-bottom: 20px;"><label for="password">Confirm Passsword</label><input class="form-control item" name = "confirmpass" type="password" id="confirm_password" onkeypress="register()" required style="padding-bottom: 6px;"></div>
-        <button id="demo" class="btn btn-primary btn-block" type="submit" style="background: #58a25b ;color: rgb(0,0,0);height: 38px;padding: 6px;font-size: 16px;text-transform: capitalize;margin-left: -2px;">Sign Up</button>
-
+        <div class="form-group">
+            <label for="password">Password<span>*</span></label>
+            <input class="form-control item" name="password" type="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" maxlength="15" required>
+        </div>
+        <div class="form-group" style="padding-bottom: 20px;">
+            <label for="password">Confirm Passsword<span>*</span></label>
+            <input class="form-control item" name="confirmpass" type="password" id="confirm_password" onkeypress="register()" required>
+        </div>
+        <button id="demo" class="btn btn-primary btn-block" type="submit" >Sign Up</button>
     </form>
-    
 </body>
 </html>
