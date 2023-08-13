@@ -21,5 +21,6 @@ import rs.views as rs_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',rs_views.homepage,name= 'home'),
+    path('registration',rs_views.registration,name= 'register'),
     path('login',rs_views.login,name= 'login'),
 ]

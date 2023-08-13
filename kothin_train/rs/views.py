@@ -8,3 +8,8 @@ def login(request):
 def homepage(request):
     dict={}
     return render(request, "search.html", context=dict)
+
+def registration(request):
+     dict = {}
+     return render(request, "registration.html", context=dict)
+
