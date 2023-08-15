@@ -23,4 +23,8 @@ urlpatterns = [
     path('',rs_views.homepage,name= 'home'),
     path('registration',rs_views.registration,name= 'register'),
     path('login',rs_views.login,name= 'login'),
+    path('about',rs_views.about,name="about"),
+    path('homepage',rs_views.homepage,name='homepage'),
+    path('test',rs_views.test,name='test'),
+    path('logout',rs_views.log_out,name='logout'),
 ]

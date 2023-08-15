@@ -1,36 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-white portfolio-navbar gradient" >
-    <div class="container">
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="http://127.0.0.1:8000/">Home</a></li>
-            <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="login" >Log in</a></li>
-            <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="registration" >Register</a></li>
-            <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="updateinfo" >Dashboard</a></li>
-            <li class="nav-item" ><a class="nav-link active link link-four pulse-grow-on-hover" href="contactus" >Contact us</a></li>
-            <li class="nav-item">Log out</a></li>
-        </ul>
+{% extends 'base.html' %}
+{% block title %}Kothin Trains | Login{% endblock title %}Kothin Trains | Login
+{% block body %}
+<form action="" method="post">
+  {% csrf_token %}
+  <h2 class="sr-only">Login Form</h2>
+  <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+  <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required></div>
+  <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password" required>
   </div>
-    </div>
-  </nav>
-  <form action="" method="post">
-    {%  csrf_token %}
-    <h2 class="sr-only">Login Form</h2>
-    <div class="illustration"><i class="icon ion-ios-locked-outline" ></i></div>
-    <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  required></div>
-    <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password" required></div>
-    <div class="form-group"><button id="demo" class="btn btn-primary btn-block" type="submit">Log In</button></div>
-    <a class="forgot" href="forget_pass">Forgot password?</a></form>
+  <button class="btn btn-success rounded-pill px-3" type="submit">Login</button></div>
+  <a class="forgot" href="forget_pass">Forgot password?</a>
+</form>
 
-    
-</body>
-</html>
+{% if login_failed %}
+<script>
+  alert("Invalid login. Please check your email and password.");
+</script>
+{% endif %}
+
+{% endblock body %}

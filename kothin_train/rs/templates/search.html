@@ -1,78 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-white portfolio-navbar gradient" style="color: rgb(118,35,35);padding: 18.2px 0px;background: linear-gradient(47deg, rgb(240,255,234), rgb(240,255,234) 99%);">
-        <div class="container">
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="http://127.0.0.1:8000/">Home</a></li>
-                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="login" >Log in</a></li>
-                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="registration" >Register</a></li>
-                <li class="nav-item"><a class="nav-link active link link-four pulse-grow-on-hover" href="updateinfo" >Dashboard</a></li>
-                <li class="nav-item" ><a class="nav-link active link link-four pulse-grow-on-hover" href="contactus" >Contact us</a></li>
-                <li class="nav-item">Log out</a></li>
-            </ul>
-      </div>
-        </div>
-    </nav>
-    
-    <form action="" method="post" >
-        {%  csrf_token %}
-        <h2 class="sr-only">Login Form</h2>
-        <div class="illustration"></div><i class="icon ion-search"></i></div>
-        <small class="form-text text-light">Route</small>
+{% extends 'base.html' %}
+{% block title %}Kothin Trains | Home {% endblock title %}Kothin Trains | Home 
+{% block body %}
+<form action="" method="post" >
+    {%  csrf_token %}
+    <h2 class="sr-only">Search Trains</h2>
+    <div class="illustration"></div><i class="icon ion-search"></i></div>
+    <small class="form-text text-light">Route</small>
 
-            <div class="dropdown float-left">
-                <select class="form-control" name="from" required>
-                <option  hidden="" value="">From</option>
-                    {% for name in names %}
-                <option>{{ name.NAME }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="dropdown float-right">
-                <select class="form-control" name="to" required>
-                <option  hidden="" value="">To</option>
-                    {% for name in names %}
-                <option >{{ name.NAME }}</option>
-                    {% endfor %}
+        <div class="dropdown float-left">
+            <select class="form-control" name="from" required>
+            <option  hidden="" value="">From</option>
+                {% for name in names %}
+            <option>{{ name.NAME }}</option>
+                {% endfor %}
             </select>
-            </div>
-
-        <div class="form-group">
-            <small class="form-text text-muted">Date</small>
-            <input class="form-control float-left" required type="date" name= "date" min="{{ date }}" max="{{ lastdate }}" >
-            <div class="dropdown float-right">
-                <select class="form-control" name="class" required>
-                <option  hidden="" value="">Choose Class</option>
-                <option >SNIGDHA</option>
-                <option >S_CHAIR</option>
-                <option >SHOVAN</option>
-                </select>
-            </div>
-
         </div>
-            <small class="form-text text-left text-muted">Passengers</small>
-            <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1" pattern="\d*" title="Input can be only numbers" >
-            <input class="form-control float-right" type="text" name="child"  required placeholder="Child" maxlength="1" pattern="\d*" title="Input can be only numbers" >
-
-        <div class="form-group">
-            <label class="float-left">*Maximum 4 seats can be issued</label>
+        <div class="dropdown float-right">
+            <select class="form-control" name="to" required>
+            <option  hidden="" value="">To</option>
+                {% for name in names %}
+            <option >{{ name.NAME }}</option>
+                {% endfor %}
+        </select>
         </div>
+
     <div class="form-group">
-        <button id="demo" class="btn btn-primary btn-block" type="submit">Find</button>
-
-
+        <small class="form-text text-muted">Date</small>
+        <input class="form-control float-left" required type="date" name= "date" min="{{ date }}" max="{{ lastdate }}" >
+        <div class="dropdown float-right">
+            <select class="form-control" name="class" required>
+            <option  hidden="" value="">Choose Class</option>
+            <option >SNIGDHA</option>
+            <option >S_CHAIR</option>
+            <option >SHOVAN</option>
+            </select>
+        </div>
 
     </div>
-    </form>
-    
-</body>
-</html>
+        <small class="form-text text-left text-muted">Passengers</small>
+        <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1" pattern="\d*" title="Input can be only numbers" >
+        <input class="form-control float-right" type="text" name="child"  required placeholder="Child" maxlength="1" pattern="\d*" title="Input can be only numbers" >
+
+    <div class="form-group">
+        <label class="float-left">*Maximum 4 seats can be issued</label>
+    </div>
+<div class="form-group">
+    <button id="demo" class="btn btn-primary btn-block" type="submit">Find</button>
+</div>
+</form>
+{% endblock body %}
