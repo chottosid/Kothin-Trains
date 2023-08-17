@@ -29,6 +29,7 @@ def login(request):
             )
         cursor.execute(query,(email,password))
         res=cursor.fetchall()
+        print(res)
         cursor.close()
         if(len(res)==0):
             context['login_failed']=True
@@ -46,10 +47,23 @@ def homepage(request):
     if user_name:
         context['User_Name'] = user_name
         request.session['User_Name'] = context['User_Name']
-    query=(
-        "SELECT * "
-    )
     #print(context['User_Name'])
+    if request.method == 'POST':
+        from_station = request.POST.get('from')
+        to_station = request.POST.get('to')
+        date = request.POST.get('date')
+        adult = request.POST.get('adult')
+        child = request.POST.get('child')
+        s_class = request.POST.get('class')
+        
+        context['from'] = from_station
+        context['to'] = to_station
+        context['date'] = date
+        context['adult'] = adult
+        context['child'] = child
+        context['class'] = s_class
+        return redirect('train_show')
+
     return render(request, "search.html",context)
 
 def registration(request):
@@ -104,3 +118,7 @@ def test(request):
 def log_out(request):
     logout(request)
     return redirect('login')
+
+def train_show(request):
+    context={}
+    return render(request,'train_show.html',context)

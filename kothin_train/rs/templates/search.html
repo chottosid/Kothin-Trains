@@ -1,51 +1,51 @@
 {% extends 'base.html' %}
-{% block title %}Kothin Trains | Home {% endblock title %}Kothin Trains | Home 
+{% block title %}Kothin Trains | Home {% endblock title %}Kothin Trains | Home
 {% block body %}
-<form action="" method="post" >
-    {%  csrf_token %}
-    <h2 class="sr-only">Search Trains</h2>
-    <div class="illustration"></div><i class="icon ion-search"></i></div>
-    <small class="form-text text-light">Route</small>
-
+{% load static %}
+<link rel="stylesheet" href="{%static '/style.css'%}">
+<div class="d-flex align-items-center py-4 bg-body-tertiary">
+    <form action="" method="post" class="mx-auto">
+        {% csrf_token %}
+        <h2 class="sr-only">Search Trains</h2>
+        <div class="illustration"></div><i class="icon ion-search"></i>
+        <small class="form-text text-light">Route</small>
         <div class="dropdown float-left">
-            <select class="form-control" name="from" required>
-            <option  hidden="" value="">From</option>
-                {% for name in names %}
-            <option>{{ name.NAME }}</option>
-                {% endfor %}
-            </select>
+            <input id="from" type="text" name="from" placeholder="FROM" required>
+            <ul id="suggestion-list-from">
+            </ul>
         </div>
         <div class="dropdown float-right">
-            <select class="form-control" name="to" required>
-            <option  hidden="" value="">To</option>
-                {% for name in names %}
-            <option >{{ name.NAME }}</option>
-                {% endfor %}
-        </select>
+            <input id="to" type="text" name="to" required placeholder="TO">
+            <ul id="suggestion-list-to">
+            </ul>
         </div>
+        <div class="form-group">
+            <small class="form-text text-muted">Date</small>
+            <input class="form-control float-left" required type="date" name="date" min="{{ date }}"
+                max="{{ lastdate }}">
+            <div class="dropdown float-right">
+                <select class="form-control" name="class" required>
+                    <option hidden="" value="">Choose Class</option>
+                    <option>SNIGDHA</option>
+                    <option>S_CHAIR</option>
+                    <option>SHOVAN</option>
+                </select>
+            </div>
 
-    <div class="form-group">
-        <small class="form-text text-muted">Date</small>
-        <input class="form-control float-left" required type="date" name= "date" min="{{ date }}" max="{{ lastdate }}" >
-        <div class="dropdown float-right">
-            <select class="form-control" name="class" required>
-            <option  hidden="" value="">Choose Class</option>
-            <option >SNIGDHA</option>
-            <option >S_CHAIR</option>
-            <option >SHOVAN</option>
-            </select>
         </div>
-
-    </div>
         <small class="form-text text-left text-muted">Passengers</small>
-        <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1" pattern="\d*" title="Input can be only numbers" >
-        <input class="form-control float-right" type="text" name="child"  required placeholder="Child" maxlength="1" pattern="\d*" title="Input can be only numbers" >
+        <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1"
+            pattern="\d*" title="Input can be only numbers">
+        <input class="form-control float-right" type="text" name="child" required placeholder="Child" maxlength="1"
+            pattern="\d*" title="Input can be only numbers">
 
-    <div class="form-group">
-        <label class="float-left">*Maximum 4 seats can be issued</label>
-    </div>
-<div class="form-group">
-    <button id="demo" class="btn btn-primary btn-block" type="submit">Find</button>
+        <div class="form-group">
+            <label class="float-left">*Maximum 4 seats can be issued</label>
+        </div>
+        <div class="form-group">
+            <button id="find-trains" class="btn btn-primary btn-block" type="submit">Find</button>
+        </div>
+    </form>
 </div>
-</form>
+<script src="{% static 'searchres.js' %}"></script>
 {% endblock body %}
