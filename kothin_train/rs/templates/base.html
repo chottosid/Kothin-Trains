@@ -2,9 +2,11 @@
 <html lang="en">
 
 {% load static %}
+
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'seat-style.css' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title%} {% endblock %}</title>
@@ -95,6 +97,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
         crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function generateSeatLayout(rows, cols) {
+                var seatLayout = '<ul>';
+                for (var row = 1; row <= rows; row++) {
+                    seatLayout += '<li><ol class="seats">';
+                    for (var col = 1; col <= cols; col++) {
+                        var seatNumber = row + String.fromCharCode(64 + col);
+                        seatLayout += `
+                        <li class="seat">
+                            <input type="checkbox" id="${seatNumber}">
+                            <label for="${seatNumber}">${seatNumber}</label>
+                        </li>
+                    `;
+                    }
+                    seatLayout += '</ol></li>';
+                }
+                seatLayout += '</ul>';
+                return seatLayout;
+            }
+
+            $('.book-now-btn').on('click', function () {
+                if ($('.seat-layout-view').children().length > 0) {
+                    $('.seat-layout-view').empty();
+                }
+                else {
+                    var seatLayout = generateSeatLayout(5, 5); // 2 rows and 4 columns
+                    $('.seat-layout-view').empty().append(seatLayout);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,38 @@
+.seats {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.seat {
+    display: flex;
+    flex: 0 0 0 14.28%;
+    position: relative;
+    padding: 5px;
+}
+
+.seat label {
+    display: block;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bolder;
+    line-height: 1.5rem;
+    padding: 4px 0;
+    background: #272182;
+    border-radius: 5px;
+}
+
+.seat input[type=checkbox] {
+    position: absolute;
+}
+
+.seat input[type=checkbox]:checked+label {
+    background: #01fc87;
+}
+
+.seat :nth-child(2) {
+    margin-right: 14%;
+}

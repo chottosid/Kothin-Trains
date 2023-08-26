@@ -1,6 +1,9 @@
 from django.shortcuts import *
 from django.db import connection
 from django.contrib.auth import *
+from django.urls import *
+from datetime import date
+from django.contrib import messages
 # Create your views here.
 
 def get_next_cardinal():
@@ -55,15 +58,8 @@ def homepage(request):
         adult = request.POST.get('adult')
         child = request.POST.get('child')
         s_class = request.POST.get('class')
-        
-        context['from'] = from_station
-        context['to'] = to_station
-        context['date'] = date
-        context['adult'] = adult
-        context['child'] = child
-        context['class'] = s_class
-        return redirect('train_show')
-
+        train_show_url = reverse('train_show') + f'?from={from_station}&to={to_station}&date={date}&adult={adult}&child={child}&class={s_class}'
+        return redirect(train_show_url)
     return render(request, "search.html",context)
 
 def registration(request):
@@ -120,5 +116,42 @@ def log_out(request):
     return redirect('login')
 
 def train_show(request):
-    context={}
+    from_station = request.GET.get('from')
+    to_station = request.GET.get('to')
+    date_user = request.GET.get('date')
+    adult = request.GET.get('adult')
+    child = request.GET.get('child')
+    s_class = request.GET.get('class')
+    date_n=date.today()
+    
+    query = (
+        'SELECT * '
+        'FROM "Train-Timetable" tt '
+        'JOIN "Train" t ON t."Train ID" = tt."Train Id" '
+        'WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = %s) '
+        'AND tt."Direction" = %s '
+        'AND TRUNC(tt."Departure Time") = TO_DATE(%s, \'yyyy-mm-dd\') '
+        'AND tt."Departure Time" > SYSTIMESTAMP '
+    )
+    cursor=connection.cursor()
+    cursor.execute(query,(from_station,to_station,date_user));
+    res=cursor.fetchall()
+    print(res);
+    cursor.close();
+    formatted_res=[]
+    for row in res:
+        fr=[] #id+train name,start station, start time, end station, end time,shovan,s_chair,snigdha
+        fr.append(str(row[5])+" ("+str(row[0])+")")
+        fr.append(from_station)
+        formatted_departure_time = row[2].strftime('%d %b, %I:%M %p')
+        fr.append(formatted_departure_time)
+        fr.append(row[3])
+        fr.append('')
+        fr.append(row[6])
+        fr.append(row[7])
+        fr.append(row[8])
+        formatted_res.append(fr)
+    context={
+        'train_res':formatted_res,
+    }
     return render(request,'train_show.html',context)

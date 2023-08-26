@@ -1,1 +1,97 @@
 {% extends 'base.html' %}
+{% block title %}Kothin Train | Search Results{% endblock title %}
+{% block body %}
+<div class="container">
+    {% for train in train_res %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>{{train.0}}</h2>
+            {% comment %} <button class="btn btn-secondary" type="button">
+                <svg width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path></path>
+                </svg>
+            </button> {% endcomment %}
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="d-block">{{train.2}}</span>
+                    <span class="d-block">{{train.1}}</span>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-12">
+                            <span class="d-block">05h 50m</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <span class="d-block">{{train.4}}</span>
+                    <span class="d-block">{{train.3}}</span>
+                </div>
+            </div>
+            {% comment %} <button class="btn btn-primary" type="button">
+                <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                </svg>
+                <p>Train Details</p>
+            </button> {% endcomment %}
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">SNIGDHA</h5>
+                            <p class="card-text">৳782</p>
+                            <p class="card-text">Including VAT</p>
+                            <p class="card-text">Available Tickets<br>(Counter + Online) {{train.7}}</p>
+                            <div class="book-now-btn-wrapper">
+                                <button class="book-now-btn seatsLayout" type="button">
+                                    BOOK NOW
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">S_CHAIR</h5>
+                            <p class="card-text">৳656</p>
+                            <p class="card-text">Including VAT</p>
+                            <p class="card-text">Available Tickets<br>(Counter + Online) {{train.5}}</p>
+                            <div class="book-now-btn-wrapper">
+                                <button class="book-now-btn seatsLayout" type="button">
+                                    BOOK NOW
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">SHOVAN</h5>
+                            <p class="card-text">৳340</p>
+                            <p class="card-text">Available Tickets<br>(Counter + Online) {{train.6}}</p>
+                            <div class="book-now-btn-wrapper">
+                                <button class="book-now-btn seatsLayout" type="button">
+                                    BOOK NOW
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4">
+            <div class="seat-layout-view">
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}
