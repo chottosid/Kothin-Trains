@@ -116,27 +116,34 @@ def log_out(request):
     return redirect('login')
 
 def train_show(request):
-    from_station = request.GET.get('from')
-    to_station = request.GET.get('to')
-    date_user = request.GET.get('date')
+    from_station = request.GET.get('from').strip()
+    to_station = request.GET.get('to').strip()
+    date_user = request.GET.get('date').strip()
     adult = request.GET.get('adult')
     child = request.GET.get('child')
     s_class = request.GET.get('class')
     date_n=date.today()
-    
+    try:
+        date_user = date.fromisoformat(date_user)  # Convert the string to a date object
+        date_user = date_user.strftime('%Y-%m-%d')
+    except ValueError:
+        # Handle invalid date_user format here
+        pass
+    print('this is ',date_user,' and ',type(date_user))
+
     query = (
-        'SELECT * '
-        'FROM "Train-Timetable" tt '
-        'JOIN "Train" t ON t."Train ID" = tt."Train Id" '
-        'WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = %s) '
-        'AND tt."Direction" = %s '
-        'AND TRUNC(tt."Departure Time") = TO_DATE(%s, \'yyyy-mm-dd\') '
-        'AND tt."Departure Time" > SYSTIMESTAMP '
+        """SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = %s)
+        AND tt."Direction" = %s
+        AND TRUNC(tt."Departure Time") = TO_DATE(%s, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP """
     )
     cursor=connection.cursor()
     cursor.execute(query,(from_station,to_station,date_user));
     res=cursor.fetchall()
-    print(res);
+    #print(res);
     cursor.close();
     formatted_res=[]
     for row in res:
@@ -151,7 +158,15 @@ def train_show(request):
         fr.append(row[7])
         fr.append(row[8])
         formatted_res.append(fr)
+
     context={
         'train_res':formatted_res,
     }
     return render(request,'train_show.html',context)
+
+def booked_seats(request):
+    selected_seats = request.GET.get('selectedSeats', '').split(',')
+    # Process the selected seats as needed
+
+    context = {'selected_seats': selected_seats}
+    return render(request,'booked_seats.html',context)

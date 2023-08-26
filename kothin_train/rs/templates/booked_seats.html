@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class='container-fluid'>
+    {% for seat in selected_seats %}
+    <h1>{{seat}}</h1>
+    {% endfor %}
+</div>
+{% endblock body %}

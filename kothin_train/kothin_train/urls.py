@@ -27,5 +27,6 @@ urlpatterns = [
     path('homepage',rs_views.homepage,name='homepage'),
     path('test',rs_views.test,name='test'),
     path('logout',rs_views.log_out,name='logout'),
-    path('train_show',rs_views.train_show,name='train_show')
+    path('train_show',rs_views.train_show,name='train_show'),
+    path('booked_seats',rs_views.booked_seats,name='booked_seats'),
 ]

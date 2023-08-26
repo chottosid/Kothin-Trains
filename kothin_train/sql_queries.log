@@ -1,0 +1,218 @@
+(0.328) 
+            SELECT
+                user_tables.table_name,
+                't',
+                user_tab_comments.comments
+            FROM user_tables
+            LEFT OUTER JOIN
+                user_tab_comments
+                ON user_tab_comments.table_name = user_tables.table_name
+            WHERE
+                NOT EXISTS (
+                    SELECT 1
+                    FROM user_mviews
+                    WHERE user_mviews.mview_name = user_tables.table_name
+                )
+            UNION ALL
+            SELECT view_name, 'v', NULL FROM user_views
+            UNION ALL
+            SELECT mview_name, 'v', NULL FROM user_mviews
+        ; args=None; alias=default
+(0.032) SELECT "DJANGO_MIGRATIONS"."ID", "DJANGO_MIGRATIONS"."APP", "DJANGO_MIGRATIONS"."NAME", "DJANGO_MIGRATIONS"."APPLIED" FROM "DJANGO_MIGRATIONS"; args=(); alias=default
+(0.047) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 16:50:49.647096 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 16, 50, 49, 647096), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.219) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwV0:kIdjZ6OxPQLc2yyZ0lfi8Fs06lEpcYQOop95a2OH98U, "EXPIRE_DATE" = 2023-09-09 16:50:58.068491 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwV0:kIdjZ6OxPQLc2yyZ0lfi8Fs06lEpcYQOop95a2OH98U', Oracle_datetime(2023, 9, 9, 16, 50, 58, 68491), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.047) COMMIT; args=None; alias=default
+(0.172) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(2023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '2023-08-26'); alias=default
+(0.016) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 16:51:05.006251 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 16, 51, 5, 6251), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwV7:O8jMw5vs6bs3MzdAfRlaASLFG4_mQ9lwmtd0J1f-Ji4, "EXPIRE_DATE" = 2023-09-09 16:51:05.149998 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwV7:O8jMw5vs6bs3MzdAfRlaASLFG4_mQ9lwmtd0J1f-Ji4', Oracle_datetime(2023, 9, 9, 16, 51, 5, 149998), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(2023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '2023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 16:51:23.617400 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 16, 51, 23, 617400), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwVP:e_lMeej9WIeuBLGocprtjzQfOiG6bSlO9iAPDF-QPuI, "EXPIRE_DATE" = 2023-09-09 16:51:23.693715 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwVP:e_lMeej9WIeuBLGocprtjzQfOiG6bSlO9iAPDF-QPuI', Oracle_datetime(2023, 9, 9, 16, 51, 23, 693715), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(2023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '2023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 16:53:08.764519 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 16, 53, 8, 764519), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwX6:XqTe9wxbCrYXZcx_4aNq9xhG9Wg5lfqLRNmII8ei2Io, "EXPIRE_DATE" = 2023-09-09 16:53:08.903076 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwX6:XqTe9wxbCrYXZcx_4aNq9xhG9Wg5lfqLRNmII8ei2Io', Oracle_datetime(2023, 9, 9, 16, 53, 8, 903076), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(2023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '2023-08-26'); alias=default
+(0.000) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(2023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '2023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 16:53:46.001736 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 16, 53, 46, 1736), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwXi:Qbao0URXvIEpYaMtxFnFMquHltgJStKbD9sUidYWQPM, "EXPIRE_DATE" = 2023-09-09 16:53:46.085317 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwXi:Qbao0URXvIEpYaMtxFnFMquHltgJStKbD9sUidYWQPM', Oracle_datetime(2023, 9, 9, 16, 53, 46, 85317), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:03:22.894385 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 3, 22, 894385), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.156) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwh8:r6jRdlHMdeXnchddh2X68divP4xDzFe_XN0wISncFqw, "EXPIRE_DATE" = 2023-09-09 17:03:30.651022 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwh8:r6jRdlHMdeXnchddh2X68divP4xDzFe_XN0wISncFqw', Oracle_datetime(2023, 9, 9, 17, 3, 30, 651022), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.015) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:04:38.596276 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 4, 38, 596276), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.016) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwiE:0cjES-7C3_cOPYLRgtMcnPGjblMRBDxPVGXNxaYZlCI, "EXPIRE_DATE" = 2023-09-09 17:04:38.830024 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwiE:0cjES-7C3_cOPYLRgtMcnPGjblMRBDxPVGXNxaYZlCI', Oracle_datetime(2023, 9, 9, 17, 4, 38, 830024), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:05:19.447823 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 5, 19, 447823), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwit:bITyoja87oBrUo3Ovft2blnhJSON1fBWhq_4LogmjQk, "EXPIRE_DATE" = 2023-09-09 17:05:19.574206 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwit:bITyoja87oBrUo3Ovft2blnhJSON1fBWhq_4LogmjQk', Oracle_datetime(2023, 9, 9, 17, 5, 19, 574206), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.016) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:05:23.254442 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 5, 23, 254442), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwix:ji8kCJFRb98bH00vEGSafC2-j8c0WAuRqg0lEFu5jes, "EXPIRE_DATE" = 2023-09-09 17:05:23.342511 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwix:ji8kCJFRb98bH00vEGSafC2-j8c0WAuRqg0lEFu5jes', Oracle_datetime(2023, 9, 9, 17, 5, 23, 342511), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:05:40.216099 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 5, 40, 216099), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwjE:9Zx8DKVQE5gCf7bs9NQF3aU0oSpl1jeokyYq2_6KTLw, "EXPIRE_DATE" = 2023-09-09 17:05:40.307298 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwjE:9Zx8DKVQE5gCf7bs9NQF3aU0oSpl1jeokyYq2_6KTLw', Oracle_datetime(2023, 9, 9, 17, 5, 40, 307298), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.047) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:10:43.685229 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 10, 43, 685229), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.203) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwoF:Eyh_Bhy3_Q_ZOhdYVWLxnapY4M2cHWWikvau0Vq1BDo, "EXPIRE_DATE" = 2023-09-09 17:10:51.723408 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwoF:Eyh_Bhy3_Q_ZOhdYVWLxnapY4M2cHWWikvau0Vq1BDo', Oracle_datetime(2023, 9, 9, 17, 10, 51, 723408), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.047) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:12:38.579210 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 12, 38, 579210), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwpy:ntQ9WJ9MMOZj--XjoqS8R2VTEtM0maW4nfOjx7MZlBY, "EXPIRE_DATE" = 2023-09-09 17:12:38.954114 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwpy:ntQ9WJ9MMOZj--XjoqS8R2VTEtM0maW4nfOjx7MZlBY', Oracle_datetime(2023, 9, 9, 17, 12, 38, 954114), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.032) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:13:47.535479 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 13, 47, 535479), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwr5:-ZcHLmX2nFkPZpc3N0zvWfzSi28s7a3f0IPVaJ-G95c, "EXPIRE_DATE" = 2023-09-09 17:13:47.655569 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwr5:-ZcHLmX2nFkPZpc3N0zvWfzSi28s7a3f0IPVaJ-G95c', Oracle_datetime(2023, 9, 9, 17, 13, 47, 655569), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:14:22.799734 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 14, 22, 799734), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwre:9c6cBAzJqTbp1gB6eFZ6mCEE2c2NCjVpEFfzc0CTFs0, "EXPIRE_DATE" = 2023-09-09 17:14:22.947699 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwre:9c6cBAzJqTbp1gB6eFZ6mCEE2c2NCjVpEFfzc0CTFs0', Oracle_datetime(2023, 9, 9, 17, 14, 22, 947699), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:15:47.128235 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 15, 47, 128235), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwt1:HWCp7G8cwKy_ufvy9SGg5I7AjWxzciIlJgutnebqrH8, "EXPIRE_DATE" = 2023-09-09 17:15:47.366973 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwt1:HWCp7G8cwKy_ufvy9SGg5I7AjWxzciIlJgutnebqrH8', Oracle_datetime(2023, 9, 9, 17, 15, 47, 366973), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:16:38.125174 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 16, 38, 125174), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwtq:3uomAEdCRmSU6Gx8hhc4PzFFzoVnls5gLrMEIw-4cSA, "EXPIRE_DATE" = 2023-09-09 17:16:38.443059 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwtq:3uomAEdCRmSU6Gx8hhc4PzFFzoVnls5gLrMEIw-4cSA', Oracle_datetime(2023, 9, 9, 17, 16, 38, 443059), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.031) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:20:30.036715 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 20, 30, 36715), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.203) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwxi:qbqCBeioa3Um4nCWFJSmCDilPTnFZfFGs1mw_oXocTY, "EXPIRE_DATE" = 2023-09-09 17:20:38.426715 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwxi:qbqCBeioa3Um4nCWFJSmCDilPTnFZfFGs1mw_oXocTY', Oracle_datetime(2023, 9, 9, 17, 20, 38, 426715), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.047) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:21:49.043267 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 21, 49, 43267), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwyr:TXURZQtr51vZhTfLoF_o25p-e_0HXszJ4tpO4jSB-VU, "EXPIRE_DATE" = 2023-09-09 17:21:49.415111 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwyr:TXURZQtr51vZhTfLoF_o25p-e_0HXszJ4tpO4jSB-VU', Oracle_datetime(2023, 9, 9, 17, 21, 49, 415111), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:22:15.730418 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 22, 15, 730418), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwzH:DXVyTy6gRsNNJ6zY5VkL0TJ9thBWXAH_QhbBAM3RELg, "EXPIRE_DATE" = 2023-09-09 17:22:15.817007 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZwzH:DXVyTy6gRsNNJ6zY5VkL0TJ9thBWXAH_QhbBAM3RELg', Oracle_datetime(2023, 9, 9, 17, 22, 15, 817007), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.250) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(08/29/2023, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '08/29/2023'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:22:16.257276 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 22, 16, 257276), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.047) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:26:13.369988 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 26, 13, 369988), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.187) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3E:8OWq_3p25ritRLmjh4NfPpChh3wzH6WVZW7m_SeJJEg, "EXPIRE_DATE" = 2023-09-09 17:26:20.313748 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3E:8OWq_3p25ritRLmjh4NfPpChh3wzH6WVZW7m_SeJJEg', Oracle_datetime(2023, 9, 9, 17, 26, 20, 313748), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.047) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:26:26.413339 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 26, 26, 413339), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3K:kgKYegR37Ix1mALwuonKm0Jpla3eyNWU4Pe3dNb0dgk, "EXPIRE_DATE" = 2023-09-09 17:26:26.587227 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3K:kgKYegR37Ix1mALwuonKm0Jpla3eyNWU4Pe3dNb0dgk', Oracle_datetime(2023, 9, 9, 17, 26, 26, 587227), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.188) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(20232023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '20232023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:26:27.109046 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 26, 27, 109046), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:26:46.732893 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 26, 46, 732893), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3e:Bx9j5BsbkQM07K5WxUO6fTQqULUfwrEImNCAHf_-0Gc, "EXPIRE_DATE" = 2023-09-09 17:26:46.804953 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3e:Bx9j5BsbkQM07K5WxUO6fTQqULUfwrEImNCAHf_-0Gc', Oracle_datetime(2023, 9, 9, 17, 26, 46, 804953), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.015) COMMIT; args=None; alias=default
+(0.000) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(20232023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '20232023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:26:46.993397 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 26, 46, 993397), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.015) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:26:54.962825 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 26, 54, 962825), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3n:iitopP80LgerJpnN-7b-DFIMbcnFvBVErHi83-CyJ4Q, "EXPIRE_DATE" = 2023-09-09 17:26:55.198687 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx3n:iitopP80LgerJpnN-7b-DFIMbcnFvBVErHi83-CyJ4Q', Oracle_datetime(2023, 9, 9, 17, 26, 55, 198687), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(20232023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '20232023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:26:55.340057 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 26, 55, 340057), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:27:20.919277 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 27, 20, 919277), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx4D:Z7DPGZy_KClerUZQJea9Fgp1a4MdFiBg7hAEDZcMfT0, "EXPIRE_DATE" = 2023-09-09 17:27:21.037037 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx4D:Z7DPGZy_KClerUZQJea9Fgp1a4MdFiBg7hAEDZcMfT0', Oracle_datetime(2023, 9, 9, 17, 27, 21, 37037), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:27:40.643256 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 27, 40, 643256), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx4W:koltDthKah8K8wy2M5afG_r8k_9jFglYSCyOajZx0kc, "EXPIRE_DATE" = 2023-09-09 17:27:40.799881 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx4W:koltDthKah8K8wy2M5afG_r8k_9jFglYSCyOajZx0kc', Oracle_datetime(2023, 9, 9, 17, 27, 40, 799881), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:28:47.157875 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 28, 47, 157875), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx5b:VfqKrKX13CuxxRPYScUba7JaPdVzZj52dO-gBkBtryU, "EXPIRE_DATE" = 2023-09-09 17:28:47.426287 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx5b:VfqKrKX13CuxxRPYScUba7JaPdVzZj52dO-gBkBtryU', Oracle_datetime(2023, 9, 9, 17, 28, 47, 426287), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:28:51.827720 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 28, 51, 827720), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx5f:1sTM3qQLBEZPeQLkLpof4yinGRFDS96mcw37zRJO5_U, "EXPIRE_DATE" = 2023-09-09 17:28:51.937595 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx5f:1sTM3qQLBEZPeQLkLpof4yinGRFDS96mcw37zRJO5_U', Oracle_datetime(2023, 9, 9, 17, 28, 51, 937595), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.078) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(2023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '2023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:29:44.944845 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 29, 44, 944845), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.016) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx6X:EvGO42YlsO7LK09Z7-jKdY-DsmMXITMmftCba_q3fJs, "EXPIRE_DATE" = 2023-09-09 17:29:45.142964 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx6X:EvGO42YlsO7LK09Z7-jKdY-DsmMXITMmftCba_q3fJs', Oracle_datetime(2023, 9, 9, 17, 29, 45, 142964), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) COMMIT; args=None; alias=default
+(0.000) SELECT * 
+        FROM "Train-Timetable" tt 
+        JOIN "Train" t ON t."Train ID" = tt."Train Id"
+        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = Santahar)
+        AND tt."Direction" = Abdulpur
+        AND TRUNC(tt."Departure Time") = TO_DATE(2023-08-26, 'YYYY-MM-DD')  -- Corrected format
+        AND tt."Departure Time" > SYSTIMESTAMP ; args=('Santahar', 'Abdulpur', '2023-08-26'); alias=default
+(0.000) SELECT "DJANGO_SESSION"."SESSION_KEY", "DJANGO_SESSION"."SESSION_DATA", "DJANGO_SESSION"."EXPIRE_DATE" FROM "DJANGO_SESSION" WHERE ("DJANGO_SESSION"."EXPIRE_DATE" > 2023-08-26 17:29:48.420054 AND "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw) FETCH FIRST 21 ROWS ONLY; args=(Oracle_datetime(2023, 8, 26, 17, 29, 48, 420054), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.000) BEGIN; args=None; alias=default
+(0.000) UPDATE "DJANGO_SESSION" SET "SESSION_DATA" = eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx6a:h22KZmfjv_5cZPtZ9xZcxNDZfoknoMaJ2ovlLbtSqzo, "EXPIRE_DATE" = 2023-09-09 17:29:48.546504 WHERE "DJANGO_SESSION"."SESSION_KEY" = wjsulh4je2fd7e8jyr5waetkm3197vzw; args=('eyJVc2VyX05hbWUiOiJBcm5hYiBEZXkifQ:1qZx6a:h22KZmfjv_5cZPtZ9xZcxNDZfoknoMaJ2ovlLbtSqzo', Oracle_datetime(2023, 9, 9, 17, 29, 48, 546504), 'wjsulh4je2fd7e8jyr5waetkm3197vzw'); alias=default
+(0.094) COMMIT; args=None; alias=default

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Kothin Train | Search Results{% endblock title %}
 {% block body %}
-<div class="container">
+<div class="container-fluid flex-column">
+    {% if train_res %}
     {% for train in train_res %}
     <div class="row">
         <div class="col-md-12">
@@ -42,7 +43,7 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">SNIGDHA</h5>
                             <p class="card-text">৳782</p>
@@ -57,7 +58,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">S_CHAIR</h5>
                             <p class="card-text">৳656</p>
@@ -72,7 +73,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">SHOVAN</h5>
                             <p class="card-text">৳340</p>
@@ -94,4 +95,13 @@
     </div>
     {% endfor %}
 </div>
+<div class="container-fluid">
+    <button type="button" class="btn btn-success" id="proceed">Continue</button>
+</div>
+    {% else %}
+    <div class="container-fluid">
+        <h1>NO TRAIN FOUND</h1>
+    </div>
+    {% endif %}
+
 {% endblock body %}
