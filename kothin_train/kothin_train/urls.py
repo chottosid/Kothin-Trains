@@ -29,4 +29,5 @@ urlpatterns = [
     path('logout',rs_views.log_out,name='logout'),
     path('train_show',rs_views.train_show,name='train_show'),
     path('booked_seats',rs_views.booked_seats,name='booked_seats'),
+    path('fetch_booked_seats', rs_views.fetch_booked_seats, name='fetch_booked_seats'),
 ]

@@ -4,6 +4,7 @@ from django.contrib.auth import *
 from django.urls import *
 from datetime import date
 from django.contrib import messages
+from django.http import JsonResponse
 # Create your views here.
 
 def get_next_cardinal():
@@ -20,7 +21,6 @@ def login(request):
     context={}
     #context['User_Name']=""
     if(request.method=='POST'):
-        print('here')
         email=request.POST.get('email')
         password=request.POST.get('password')
         cursor=connection.cursor()
@@ -32,7 +32,6 @@ def login(request):
             )
         cursor.execute(query,(email,password))
         res=cursor.fetchall()
-        print(res)
         cursor.close()
         if(len(res)==0):
             context['login_failed']=True
@@ -46,7 +45,8 @@ def login(request):
 def homepage(request):
     context={}
     user_name = request.session.get('User_Name')
-    print(request.session.items())
+    not_logged=request.session.get('not_logged_in')
+
     if user_name:
         context['User_Name'] = user_name
         request.session['User_Name'] = context['User_Name']
@@ -116,13 +116,19 @@ def log_out(request):
     return redirect('login')
 
 def train_show(request):
+    context={}
+    user_name = request.session.get('User_Name')
+    if user_name:
+        context['User_Name'] = user_name
+        request.session['User_Name'] = context['User_Name']
+    else:
+        context['not_logged_in']=True
+        request.session['not_logged_in']=True
+        #return redirect('homepage')
+
     from_station = request.GET.get('from').strip()
     to_station = request.GET.get('to').strip()
     date_user = request.GET.get('date').strip()
-    adult = request.GET.get('adult')
-    child = request.GET.get('child')
-    s_class = request.GET.get('class')
-    date_n=date.today()
     try:
         date_user = date.fromisoformat(date_user)  # Convert the string to a date object
         date_user = date_user.strftime('%Y-%m-%d')
@@ -147,7 +153,7 @@ def train_show(request):
     cursor.close();
     formatted_res=[]
     for row in res:
-        fr=[] #id+train name,start station, start time, end station, end time,shovan,s_chair,snigdha
+        fr=[] #id+train name,start station, start time, end station, end time,shovan,s_chair,snigdha,id,date
         fr.append(str(row[5])+" ("+str(row[0])+")")
         fr.append(from_station)
         formatted_departure_time = row[2].strftime('%d %b, %I:%M %p')
@@ -157,11 +163,11 @@ def train_show(request):
         fr.append(row[6])
         fr.append(row[7])
         fr.append(row[8])
+        fr.append(row[0])
+        fr.append(row[2].date().strftime('%Y-%m-%d'))
         formatted_res.append(fr)
 
-    context={
-        'train_res':formatted_res,
-    }
+    context['train_res']=formatted_res
     return render(request,'train_show.html',context)
 
 def booked_seats(request):
@@ -170,3 +176,20 @@ def booked_seats(request):
 
     context = {'selected_seats': selected_seats}
     return render(request,'booked_seats.html',context)
+
+def fetch_booked_seats(request):
+    train_id = request.GET.get('train_id')
+    from_station =request.GET.get('from_station_id')
+    date_user=request.GET.get('departure_date')
+    seat_class=request.GET.get('seat_class')
+    with connection.cursor() as cursor:
+        query = (
+            """SELECT "Seat No"
+                from "Reserved-seat"
+                WHERE "Train ID"=%s
+                and "Departure Date"=to_date(%s,'YYYY-MM-DD') 
+                and "Class"=%s """
+        )
+        cursor.execute(query, (train_id,date_user,seat_class))
+        booked_seats = [row[0] for row in cursor.fetchall()]
+    return JsonResponse({'booked_seats': booked_seats})

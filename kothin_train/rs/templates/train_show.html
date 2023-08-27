@@ -50,7 +50,7 @@
                             <p class="card-text">Including VAT</p>
                             <p class="card-text">Available Tickets<br>(Counter + Online) {{train.7}}</p>
                             <div class="book-now-btn-wrapper">
-                                <button class="book-now-btn seatsLayout" type="button">
+                                <button class="book-now-btn seatsLayout" type="button" data-train-id="{{ train.8 }}" data-seat-class="Snigdha" data-departure-date={{train.9}}>
                                     BOOK NOW
                                 </button>
                             </div>
@@ -65,7 +65,7 @@
                             <p class="card-text">Including VAT</p>
                             <p class="card-text">Available Tickets<br>(Counter + Online) {{train.5}}</p>
                             <div class="book-now-btn-wrapper">
-                                <button class="book-now-btn seatsLayout" type="button">
+                                <button class="book-now-btn seatsLayout" type="button" data-train-id="{{ train.8 }}" data-seat-class="S_chair" data-departure-date={{train.9}}>
                                     BOOK NOW
                                 </button>
                             </div>
@@ -79,7 +79,7 @@
                             <p class="card-text">৳340</p>
                             <p class="card-text">Available Tickets<br>(Counter + Online) {{train.6}}</p>
                             <div class="book-now-btn-wrapper">
-                                <button class="book-now-btn seatsLayout" type="button">
+                                <button class="book-now-btn seatsLayout" type="button" data-train-id="{{ train.8 }}" data-seat-class="Shovan" data-departure-date={{train.9}}>
                                     BOOK NOW
                                 </button>
                             </div>
@@ -88,12 +88,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 mt-4">
-            <div class="seat-layout-view">
-            </div>
-        </div>
     </div>
     {% endfor %}
+    <div class="col-md-12 mt-4">
+        <div class="seat-layout-view">
+        </div>
+    </div>
 </div>
 <div class="container-fluid">
     <button type="button" class="btn btn-success" id="proceed">Continue</button>
@@ -105,3 +105,86 @@
     {% endif %}
 
 {% endblock body %}
+
+{% block cutsom_scripts %}
+<script>
+    $(document).ready(function () {
+    var selectedSeats = []
+
+    function generateSeatLayout(rows, cols) {
+        var seatLayout = '<ul style="list-style: none;">';
+        for (var row = 1; row <= rows; row++) {
+            seatLayout += '<li><ol class="seats">';
+            for (var col = 1; col <= cols; col++) {
+                var seatNumber = row + String.fromCharCode(64 + col);
+                seatLayout += `
+            <li class="seat">
+                <input type="checkbox" id="${seatNumber}">
+                <label for="${seatNumber}">${seatNumber}</label>
+            </li>
+            `;
+            }
+            seatLayout += '</ol></li>';
+        }
+        seatLayout += '</ul>';
+        return seatLayout;
+    }
+
+    $('.book-now-btn').on('click', function () {
+        if ($('.seat-layout-view').children().length > 0) {
+            $('.seat-layout-view').empty();
+        }
+        else {
+            var train_id=$(this).data('train-id')
+            var seat_class=$(this).data('seat-class')
+            var doj=$(this).data('departure-date')
+
+            var seatLayout = generateSeatLayout(5, 5); // 2 rows and 4 columns
+            $('.seat-layout-view').empty().append(seatLayout);
+            $('.seat input[type="checkbox"]').on('change', function () {
+                var selectedCheckboxes = $('.seat input[type="checkbox"]:checked');
+                selectedSeats = selectedCheckboxes.map(function () {
+                    return $(this).attr('id');
+                }).get();
+
+                console.log('Selected Seats:', selectedSeats);
+                // Now you can use the selectedSeats data for further processing
+            });
+
+            $.ajax({
+                url: "{% url 'fetch_booked_seats' %}",
+                type: 'GET',
+                data: { train_id: train_id, seat_class:seat_class, departure_date:doj,},
+                success: function(response) {
+                    var bookedSeats = response.booked_seats;
+                    console.log(bookedSeats)
+                    updateSeatLayout(bookedSeats);
+                }
+            });
+
+            function updateSeatLayout(bookedSeats) {
+                // Loop through checkboxes and mark non-available seats as non-clickable
+                $('.seat input[type="checkbox"]').each(function () {
+                    var seatId = $(this).attr('id');
+                    var isBooked = bookedSeats.includes(seatId);
+    
+                    // Disable booked seats and add a grayed-out appearance
+                    $(this).prop('disabled', isBooked);
+                    if (isBooked) {
+                        $(this).parent().addClass('booked-seat');
+                    } else {
+                        $(this).parent().removeClass('booked-seat');
+                    }
+                });
+            }
+            $('#proceed').on('click', function () {
+                if (selectedSeats.length > 0 && selectedSeats.length <= 4) {
+                    var url = "{% url 'booked_seats' %}?selectedSeats=" + selectedSeats.join(',');
+                    window.location.href = url;
+                }
+            })
+        }
+    });
+});
+</script>
+{% endblock cutsom_scripts %}

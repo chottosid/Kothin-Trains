@@ -21,7 +21,7 @@
     font-weight: bolder;
     line-height: 1.5rem;
     padding: 4px 0;
-    background: #272182;
+    background: #308659;
     border-radius: 5px;
 }
 
@@ -30,9 +30,17 @@
 }
 
 .seat input[type=checkbox]:checked+label {
-    background: #01fc87;
+    background: #855717d0;
 }
 
 .seat :nth-child(2) {
     margin-right: 14%;
+}
+
+/* Style for booked seats */
+.booked-seat {
+    opacity: .1;
+    /* Adjust opacity to control the level of gray */
+    pointer-events: none;
+    /* Prevent interactions with grayed-out seats */
 }

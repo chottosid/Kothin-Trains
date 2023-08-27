@@ -100,54 +100,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <script>
-        $(document).ready(function () {
-            var selectedSeats = []
-            function generateSeatLayout(rows, cols) {
-                var seatLayout = '<ul>';
-                for (var row = 1; row <= rows; row++) {
-                    seatLayout += '<li><ol class="seats">';
-                    for (var col = 1; col <= cols; col++) {
-                        var seatNumber = row + String.fromCharCode(64 + col);
-                        seatLayout += `
-                    <li class="seat">
-                        <input type="checkbox" id="${seatNumber}">
-                        <label for="${seatNumber}">${seatNumber}</label>
-                    </li>
-                    `;
-                    }
-                    seatLayout += '</ol></li>';
-                }
-                seatLayout += '</ul>';
-                return seatLayout;
-            }
-
-            $('.book-now-btn').on('click', function () {
-                if ($('.seat-layout-view').children().length > 0) {
-                    $('.seat-layout-view').empty();
-                }
-                else {
-                    var seatLayout = generateSeatLayout(5, 5); // 2 rows and 4 columns
-                    $('.seat-layout-view').empty().append(seatLayout);
-                    $('.seat input[type="checkbox"]').on('change', function () {
-                        var selectedCheckboxes = $('.seat input[type="checkbox"]:checked');
-                        selectedSeats = selectedCheckboxes.map(function () {
-                            return $(this).attr('id');
-                        }).get();
-
-                        console.log('Selected Seats:', selectedSeats);
-                        // Now you can use the selectedSeats data for further processing
-                    });
-                    $('#proceed').on('click', function () {
-                        if (selectedSeats.length > 0 && selectedSeats.length <= 4) {
-                            var url = "{% url 'booked_seats' %}?selectedSeats=" + selectedSeats.join(',');
-                            window.location.href = url;
-                        }
-                    })
-                }
-            });
-        });
-    </script>
     {% block cutsom_scripts %}{% endblock cutsom_scripts %}
 </body>
 
