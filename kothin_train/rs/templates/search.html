@@ -1,56 +1,65 @@
 {% extends 'base.html' %}
-{% block title %}Kothin Trains | Home {% endblock title %}Kothin Trains | Home
+{% block title %}Kothin Trains | Home{% endblock title %}
 {% block body %}
 {% load static %}
-<link rel="stylesheet" href="{%static '/style.css'%}">
-<div class="d-flex align-items-center py-4 bg-body-tertiary">
-    <form action="" method="post" class="mx-auto">
-        {% csrf_token %}
-        <h2 class="sr-only">Search Trains</h2>
-        <div class="illustration"></div><i class="icon ion-search"></i>
-        <small class="form-text text-light">Route</small>
-        <div class="dropdown float-left">
-            <input id="from" type="text" name="from" placeholder="FROM" required>
-            <ul id="suggestion-list-from">
-            </ul>
-        </div>
-        <div class="dropdown float-right">
-            <input id="to" type="text" name="to" required placeholder="TO">
-            <ul id="suggestion-list-to">
-            </ul>
-        </div>
-        <div class="form-group">
-            <small class="form-text text-muted">Date</small>
-            <input class="form-control custom-datepicker" required type="text" id="date" name="date"
-                style="width: 200px; background-color: white !important;">
-            <div class="dropdown float-right">
-                <select class="form-control" name="class" required>
-                    <option hidden="" value="">Choose Class</option>
-                    <option>SNIGDHA</option>
-                    <option>S_CHAIR</option>
-                    <option>SHOVAN</option>
-                </select>
+<link rel="stylesheet" href="{% static '/style.css' %}">
+<style>
+    .bg-image {
+        background-image: url('{% static "railway1.jpg" %}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100vh;
+    }
+</style>
+<div class="bg-image">
+    <div class="d-flex align-items-center py-4">
+        <form action="" method="post" class="mx-auto">
+            {% csrf_token %}
+            <h2 class="sr-only">Search Trains</h2>
+            <div class="illustration"></div><i class="icon ion-search"></i>
+            <small class="form-text text-light">Route</small>
+            <div class="dropdown float-left">
+                <input id="from" type="text" name="from" placeholder="FROM" required>
+                <ul id="suggestion-list-from">
+                </ul>
             </div>
-
-        </div>
-        <small class="form-text text-left text-muted">Passengers</small>
-        <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1"
-            pattern="\d*" title="Input can be only numbers">
-        <input class="form-control float-right" type="text" name="child" required placeholder="Child" maxlength="1"
-            pattern="\d*" title="Input can be only numbers">
-
-        <div class="form-group">
-            <label class="float-left">*Maximum 4 seats can be issued</label>
-        </div>
-        <div class="form-group">
-            <button id="find-trains" class="btn btn-primary btn-block" type="submit">Find</button>
-        </div>
-    </form>
-    {% if not_logged_in %}
-    <script>
-        alert("Please Login First");
-    </script>
-    {% endif %}
+            <div class="dropdown float-right">
+                <input id="to" type="text" name="to" required placeholder="TO">
+                <ul id="suggestion-list-to">
+                </ul>
+            </div>
+            <div class="form-group">
+                <small class="form-text text-muted">Date</small>
+                <input class="form-control custom-datepicker" required type="text" id="date" name="date"
+                    style="width: 200px; background-color: white !important;">
+                <div class="dropdown float-right">
+                    <select class="form-control" name="class" required>
+                        <option hidden="" value="">Choose Class</option>
+                        <option>SNIGDHA</option>
+                        <option>S_CHAIR</option>
+                        <option>SHOVAN</option>
+                    </select>
+                </div>
+            </div>
+            <small class="form-text text-left text-muted">Passengers</small>
+            <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1"
+                pattern="\d*" title="Input can be only numbers">
+            <input class="form-control float-right" type="text" name="child" required placeholder="Child" maxlength="1"
+                pattern="\d*" title="Input can be only numbers">
+            <div class="form-group">
+                <label class="float-left">*Maximum 4 seats can be issued</label>
+            </div>
+            <div class="form-group">
+                <button id="find-trains" class="btn btn-primary btn-block" type="submit">Find</button>
+            </div>
+        </form>
+        {% if not_logged_in %}
+        <script>
+            alert("Please Login First");
+        </script>
+        {% endif %}
+    </div>
 </div>
 {% endblock body %}
 {% block cutsom_scripts %}

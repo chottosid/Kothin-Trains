@@ -1,3 +1,88 @@
 .auto-sugg {
     display: none;
 }
+/* style.css */
+
+/* Reset some default styles and set a background color */
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+/* Style for the background image container */
+.bg-image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style for the search form container */
+.form-container {
+    background-color: rgba(97, 9, 9, 0.8);
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for form inputs */
+.form-control {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+/* Style for the submit button */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Style for the dropdown */
+.dropdown {
+    position: relative;
+}
+
+/* Style for the dropdown input */
+.dropdown input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style for the dropdown suggestion list */
+.dropdown ul {
+    position: absolute;
+    background-color: white;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    width: 100%;
+    z-index: 1;
+}
+
+/* Style for dropdown suggestion list items */
+.dropdown li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* Additional custom styles can be added as needed */
+
