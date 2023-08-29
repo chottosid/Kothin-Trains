@@ -7,8 +7,8 @@
 body, html {
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    font-family: 'Arial', sans-serif;
 }
 
 /* Style for the background image container */
@@ -24,31 +24,47 @@ body, html {
 
 /* Style for the search form container */
 .form-container {
-    background-color: rgba(97, 9, 9, 0.8);
-    border-radius: 8px;
-    padding: 20px;
-    width: 400px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 40px;
+    width: 450px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 /* Style for form inputs */
 .form-control {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-bottom: 15px;
+    padding: 12px;
+    border: none;
+    border-bottom: 2px solid #e61010;
+    background-color: transparent;
+    border-radius: 0;
     width: 100%;
+    transition: border-color 0.3s;
+    font-size: 16px;
 }
 
-/* Style for the submit button */
+.form-control:focus {
+    border-color: #007bff;
+}
+
+/* Style for the colorful submit button */
 .btn-primary {
-    background-color: #007bff;
+    background-color: #f06d06;
     color: white;
-    padding: 10px;
+    padding: 12px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     width: 100%;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+/* Change button color on hover */
+.btn-primary:hover {
+    background-color: #e65705;
 }
 
 /* Style for the dropdown */
@@ -59,9 +75,12 @@ body, html {
 /* Style for the dropdown input */
 .dropdown input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background-color: transparent;
+    border-radius: 0;
+    font-size: 16px;
 }
 
 /* Style for the dropdown suggestion list */
@@ -73,16 +92,21 @@ body, html {
     margin: 0;
     border: 1px solid #ccc;
     border-top: none;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 8px 8px;
     width: 100%;
     z-index: 1;
+    box-shadow: 0px 2px 10px rgba(219, 214, 214, 0.1);
+    font-size: 16px;
 }
 
 /* Style for dropdown suggestion list items */
 .dropdown li {
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-/* Additional custom styles can be added as needed */
-
+/* Change background color on hover */
+.dropdown li:hover {
+    background-color: #eb1616;
+}
