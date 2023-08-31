@@ -12,7 +12,7 @@ body, html {
 }
 
 /* Style for the background image container */
-.bg-image {
+/* .bg-image {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -20,7 +20,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */
 
 /* Style for the search form container */
 .form-container {
@@ -50,7 +50,7 @@ body, html {
 }
 
 /* Style for the colorful submit button */
-.btn-primary {
+.btn1 {
     background-color: #f06d06;
     color: white;
     padding: 12px;
