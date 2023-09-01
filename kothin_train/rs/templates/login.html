@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Kothin Trains | Login{% endblock title %}Kothin Trains | Login
+{% block title %}Kothin Trains | Login{% endblock title %}
 {% block body %}
 
 <div class="d-flex align-items-center py-4 bg-body-tertiary">
@@ -27,7 +27,7 @@
     <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
   </form>
 </div>
-{% if login_failed %}
+{% if not_reg %}
 <script>
   alert("Invalid login. Please check your email and password.");
 </script>

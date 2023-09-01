@@ -30,4 +30,7 @@ urlpatterns = [
     path('train_show',rs_views.train_show,name='train_show'),
     path('booked_seats',rs_views.booked_seats,name='booked_seats'),
     path('fetch_booked_seats', rs_views.fetch_booked_seats, name='fetch_booked_seats'),
+    path('success',rs_views.success,name='success'),
+    path('failed',rs_views.failed,name='failed'),
+    path('verify',rs_views.ipn_handler,name='verify'),
 ]

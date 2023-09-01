@@ -5,6 +5,9 @@ from django.urls import *
 from datetime import date
 from django.contrib import messages
 from django.http import JsonResponse
+from sslcommerz_lib import SSLCOMMERZ 
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 
 def get_next_cardinal():
@@ -19,13 +22,13 @@ def get_next_cardinal():
 
 def login(request):
     context={}
-    #context['User_Name']=""
+
     if(request.method=='POST'):
         email=request.POST.get('email')
         password=request.POST.get('password')
         cursor=connection.cursor()
         query=(
-            "SELECT FIRST_NAME||' '||LAST_NAME AS NAME "
+            "SELECT * "
             "FROM R_USER "
             "WHERE E_MAIL=%s "
             "AND PASSWORD=%s "
@@ -34,23 +37,22 @@ def login(request):
         res=cursor.fetchall()
         cursor.close()
         if(len(res)==0):
-            context['login_failed']=True
+            context['not_reg']=True
             return render(request, "login.html",context)
         else:
-            context['User_Name']=res[0][0]
-            request.session['User_Name'] = context['User_Name']
+            user_data={}
+            user_data['email']=res[0][5]
+            user_data['name']=res[0][2]+" "+res[0][3]
+            user_data['id']=res[0][0]
+            user_data['phone']=res[0][11]
+            request.session['user_data'] = user_data
             return redirect('homepage')
+        
     return render(request, "login.html",context)
 
 def homepage(request):
     context={}
-    user_name = request.session.get('User_Name')
-    not_logged=request.session.get('not_logged_in')
 
-    if user_name:
-        context['User_Name'] = user_name
-        request.session['User_Name'] = context['User_Name']
-    #print(context['User_Name'])
     if request.method == 'POST':
         from_station = request.POST.get('from')
         to_station = request.POST.get('to')
@@ -60,16 +62,13 @@ def homepage(request):
         s_class = request.POST.get('class')
         train_show_url = reverse('train_show') + f'?from={from_station}&to={to_station}&date={date}&adult={adult}&child={child}&class={s_class}'
         return redirect(train_show_url)
+    
     return render(request, "search.html",context)
 
 def registration(request):
     context={}
-    user_name = request.session.get('User_Name')
-    if user_name:
-        context['User_Name'] = user_name
-        request.session['User_Name'] = context['User_Name']
+
     if request.method == 'POST':
-        # Extract form data
         first_name = request.POST.get('frst')
         last_name = request.POST.get('last')
         gender = request.POST.get('gender')
@@ -89,9 +88,8 @@ def registration(request):
         )
         cursor.execute(query,(nid,))
         res=cursor.fetchall()
-        print(res)
         if(res):
-            context['NID_Duplicate']=True
+            context['nid_duplicate']=True
             cursor.close()
             return render(request,"registration.html",context)
         else:
@@ -117,14 +115,6 @@ def log_out(request):
 
 def train_show(request):
     context={}
-    user_name = request.session.get('User_Name')
-    if user_name:
-        context['User_Name'] = user_name
-        request.session['User_Name'] = context['User_Name']
-    else:
-        context['not_logged_in']=True
-        request.session['not_logged_in']=True
-        #return redirect('homepage')
 
     from_station = request.GET.get('from').strip()
     to_station = request.GET.get('to').strip()
@@ -135,21 +125,20 @@ def train_show(request):
     except ValueError:
         # Handle invalid date_user format here
         pass
-    print('this is ',date_user,' and ',type(date_user))
 
+    cursor=connection.cursor()
+    from_station_id = cursor.callfunc("getID", int,[from_station])
     query = (
         """SELECT * 
         FROM "Train-Timetable" tt 
         JOIN "Train" t ON t."Train ID" = tt."Train Id"
-        WHERE tt."Station Id" = (SELECT "Station ID" FROM "Station" WHERE "Name" = %s)
+        WHERE tt."Station Id" = %s
         AND tt."Direction" = %s
-        AND TRUNC(tt."Departure Time") = TO_DATE(%s, 'YYYY-MM-DD')  -- Corrected format
+        AND TRUNC(tt."Departure Time") = TO_DATE(%s, 'YYYY-MM-DD')
         AND tt."Departure Time" > SYSTIMESTAMP """
     )
-    cursor=connection.cursor()
-    cursor.execute(query,(from_station,to_station,date_user));
+    cursor.execute(query,(from_station_id,to_station,date_user));
     res=cursor.fetchall()
-    #print(res);
     cursor.close();
     formatted_res=[]
     for row in res:
@@ -168,18 +157,58 @@ def train_show(request):
         formatted_res.append(fr)
 
     context['train_res']=formatted_res
+    context['from_station']=from_station
+    context['to_station']=to_station
+    context['doj']=date_user
     return render(request,'train_show.html',context)
 
 def booked_seats(request):
     selected_seats = request.GET.get('selectedSeats', '').split(',')
-    # Process the selected seats as needed
+    seatClass=request.GET.get('seatClass','')
+    train_id=request.GET.get('trainID','')
+    from_station=request.GET.get('from')
+    to_station=request.GET.get('to')
+    doj=request.GET.get('doj')
+    fromid=get_station_id(from_station)
+    toid=get_station_id(to_station)
 
-    context = {'selected_seats': selected_seats}
+    if request.method=='POST':
+        base_url = request.build_absolute_uri('/')[:-1]
+        settings = { 'store_id': 'shoho64ef8f4171208', 'store_pass': 'shoho64ef8f4171208@ssl', 'issandbox': True }
+        sslcommez = SSLCOMMERZ(settings)
+        post_body = {}
+        post_body['total_amount'] = 200
+        post_body['currency'] = "BDT"
+        post_body['tran_id'] = "1111"
+        post_body['success_url'] = f"{base_url}/success"
+        post_body['fail_url'] = f"{base_url}/failed"
+        post_body['cancel_url'] = f"{base_url}/failed"
+        post_body['ipn_url'] = f"{base_url}/verify"
+        post_body['emi_option'] = 0
+        post_body['cus_name'] = request.session.get('user_data')['name']
+        post_body['cus_email'] = request.session.get('user_data')['email']
+        post_body['cus_phone'] = request.session.get('user_data')['phone']
+        post_body['cus_add1'] = ""
+        post_body['cus_city'] = "Dhaka"
+        post_body['cus_country'] = "Bangladesh"
+        post_body['shipping_method'] = "NO"
+        post_body['multi_card_name'] = ""
+        post_body['num_of_item'] = 1
+        post_body['product_name'] = "ticket"
+        post_body['product_category'] = "ticket"
+        post_body['product_profile'] = "general"
+        post_body['value_a'] = request.session.get('user_data')['id'] # USER ID
+        post_body['value_b'] = str(train_id)+"*"+str(fromid)+"*"+str(toid)+"*"+str(doj)+"*"+seatClass+"*"+",".join(selected_seats);
+        response = sslcommez.createSession(post_body)
+        #print(response)
+        #print(str(train_id)+"-"+str(fromid)+"-"+str(toid)+"-"+str(doj)+"-"+seatClass+"-"+",".join(selected_seats))
+        return redirect(response['GatewayPageURL'])
+    
+    context = {'train_id':train_id,'seat_class':seatClass,'selected_seats': selected_seats}
     return render(request,'booked_seats.html',context)
 
 def fetch_booked_seats(request):
     train_id = request.GET.get('train_id')
-    from_station =request.GET.get('from_station_id')
     date_user=request.GET.get('departure_date')
     seat_class=request.GET.get('seat_class')
     with connection.cursor() as cursor:
@@ -193,3 +222,86 @@ def fetch_booked_seats(request):
         cursor.execute(query, (train_id,date_user,seat_class))
         booked_seats = [row[0] for row in cursor.fetchall()]
     return JsonResponse({'booked_seats': booked_seats})
+
+@csrf_exempt
+def success(request):
+    if(request.method=='POST'):
+        tran_date = request.POST['tran_date']
+        tran_date=tran_date.split(" ")[0].strip()
+        val_id = request.POST['val_id']
+        amount = request.POST['amount']
+        currency = request.POST['currency']
+        status = request.POST['status']
+        tran_id = request.POST['tran_id']
+        userid=request.POST['value_a']
+        info=request.POST['value_b']
+
+        train_id, fromid, toid, doj, seat_class, selected_seats = info.split('*')
+        selected_seats_list = selected_seats.split(',')
+        print(status)
+        print("-------------------")
+        print(info)
+        if status=='VALID':
+            query = (
+                """INSERT INTO "C##KOTHIN_TRAIN"."Reservation"
+                ("Reservation ID", "Date of Reservation", "Date of Journey", "No. of Tickets", "Class", "From Station", "To Station", "User-ID", "Payment ID")
+                VALUES (%s, TO_DATE(%s, 'YYYY-MM-DD'), TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s, %s, %s, %s) """
+            )
+            cursor=connection.cursor()
+            cursor.execute(query, (info, tran_date,doj, len(selected_seats_list), seat_class, fromid, toid, userid,tran_id))
+            query2 = (
+                    """INSERT INTO "C##KOTHIN_TRAIN"."Reserved-seat" ("Train ID", "From Station ID", "To Station ID", "Departure Date", "Seat No", "User ID", "Class") 
+                    VALUES (%s, %s, %s, TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s) """
+                )
+            for seat in selected_seats_list:
+                cursor.execute(query2,(train_id,fromid,toid,doj,seat,userid,seat_class))
+            cursor.close()
+    return render(request,'confirm.html')
+
+@csrf_exempt
+def failed(request):
+    return render(request,'failed.html')
+
+@csrf_exempt
+def ipn_handler(request):
+    if(request.method=='POST'):
+        tran_date = request.POST['tran_date']
+        val_id = request.POST['val_id']
+        amount = request.POST['amount']
+        currency = request.POST['currency']
+        status = request.POST['status']
+        tran_id = request.POST['tran_id']
+        userid=request.POST['value_a']
+        info=request.POST['value_b']
+
+        train_id, fromid, toid, doj, seat_class, selected_seats = info.split('*')
+        selected_seats_list = selected_seats.split(',')
+        print(status)
+        print("-------------------")
+        print(info)
+        if status=='VALID':
+            query = (
+                """INSERT INTO "C##KOTHIN_TRAIN"."Reservation"
+                ("Reservation ID", "Date of Reservation", "Date of Journey", "No. of Tickets", "Class", "From Station", "To Station", "User-ID", "Payment ID")
+                VALUES (%s, TO_DATE(%s, 'YYYY-MM-DD'), TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s, %s, %s, %s) """
+            )
+            cursor=connection.cursor()
+            cursor.execute(query, (info, tran_date,doj, len(selected_seats_list), seat_class, fromid, toid, userid,tran_id))
+            query2 = (
+                    """INSERT INTO "C##KOTHIN_TRAIN"."Reserved-seat" ("Train ID", "From Station ID", "To Station ID", "Departure Date", "Seat No", "User ID", "Class") 
+                    VALUES (%s, %s, %s, TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s) """
+                )
+            for seat in selected_seats_list:
+                cursor.execute(query2,(train_id,fromid,toid,doj,seat,userid,seat_class))
+            cursor.close()
+            return HttpResponse(status=200)
+        
+        return HttpResponse(status=400)
+    return HttpResponse(status=400)
+
+#returns station id
+def get_station_id(name):
+    cursor=connection.cursor()
+    id = cursor.callfunc("getID", int,[name])
+    cursor.close()
+    return id

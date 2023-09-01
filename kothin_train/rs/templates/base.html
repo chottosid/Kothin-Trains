@@ -39,8 +39,8 @@
                         <a class="nav-link" href="contact_us">Contact Us</a>
                     </li>
                 </ul>
-                {% if User_Name %}
-                <h5 class="navbar-text px-5">{{User_Name}}</h5>
+                {% if request.session.user_data.name %}
+                <h5 class="navbar-text px-5">{{request.session.user_data.name}}</h5>
                 <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
                 {% endif %}
             </div>

@@ -3,29 +3,29 @@
 {% block body %}
 {% load static %}
 <link rel="stylesheet" href="{%static '/style.css'%}">
-<div class="d-flex align-items-center py-4 bg-body-tertiary">
+<div class="d-flex py-4 bg-body-tertiary">
     <form action="" method="post" class="mx-auto">
         {% csrf_token %}
-        <h2 class="sr-only">Search Trains</h2>
-        <div class="illustration"></div><i class="icon ion-search"></i>
-        <small class="form-text text-light">Route</small>
-        <div class="dropdown float-left">
-            <input id="from" type="text" name="from" placeholder="FROM" required>
-            <ul id="suggestion-list-from">
+        <h2 class="py-3">Search Trains</h2>
+        <div class="mb-3">
+            <label for="from" class="form-label">From Station</label>
+            <input id="from" type="text" name="from" placeholder="From" required class="form-control">
+            <ul id="suggestion-list-from" class="">
             </ul>
         </div>
-        <div class="dropdown float-right">
-            <input id="to" type="text" name="to" required placeholder="TO">
+        <div class="dropdown float-right mb-3">
+            <label for="to" class="form-label">To Station</label>
+            <input id="to" type="text" name="to" required placeholder="To" class="form-control">
             <ul id="suggestion-list-to">
             </ul>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <small class="form-text text-muted">Date</small>
             <input class="form-control custom-datepicker" required type="text" id="date" name="date"
                 style="width: 200px; background-color: white !important;">
-            <div class="dropdown float-right">
+            <div class="dropdown float-right form-text">
                 <select class="form-control" name="class" required>
-                    <option hidden="" value="">Choose Class</option>
+                    <option hidden="" value="" class="form-text">Choose Class</option>
                     <option>SNIGDHA</option>
                     <option>S_CHAIR</option>
                     <option>SHOVAN</option>
@@ -33,24 +33,21 @@
             </div>
 
         </div>
-        <small class="form-text text-left text-muted">Passengers</small>
-        <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1"
-            pattern="\d*" title="Input can be only numbers">
-        <input class="form-control float-right" type="text" name="child" required placeholder="Child" maxlength="1"
-            pattern="\d*" title="Input can be only numbers">
+        <div class="mb-3">
+            <small class="form-text text-left text-muted">Passengers</small>
+            <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1"
+                pattern="\d*" title="Input can be only numbers">
+            <input class="form-control float-right" type="text" name="child" required placeholder="Child" maxlength="1"
+                pattern="\d*" title="Input can be only numbers">
 
-        <div class="form-group">
-            <label class="float-left">*Maximum 4 seats can be issued</label>
-        </div>
-        <div class="form-group">
-            <button id="find-trains" class="btn btn-primary btn-block" type="submit">Find</button>
+            <div class="form-group">
+                <label class="float-left form-text">*Maximum 4 seats can be issued</label>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button id="find-trains" class="btn btn-primary btn-block text-center px-4" type="submit">Find</button>
+            </div>
         </div>
     </form>
-    {% if not_logged_in %}
-    <script>
-        alert("Please Login First");
-    </script>
-    {% endif %}
 </div>
 {% endblock body %}
 {% block cutsom_scripts %}

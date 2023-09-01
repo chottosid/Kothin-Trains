@@ -103,7 +103,11 @@
         <h1>NO TRAIN FOUND</h1>
     </div>
     {% endif %}
-
+    {% if not request.session.user_data.name %}
+    <script>
+        alert('Please login first');
+    </script>
+    {% endif %}
 {% endblock body %}
 
 {% block cutsom_scripts %}
@@ -138,6 +142,8 @@
             var train_id=$(this).data('train-id')
             var seat_class=$(this).data('seat-class')
             var doj=$(this).data('departure-date')
+            var from_station= "{{from_station}}"
+            var to_station ="{{to_station}}"
 
             var seatLayout = generateSeatLayout(5, 5); // 2 rows and 4 columns
             $('.seat-layout-view').empty().append(seatLayout);
@@ -148,13 +154,12 @@
                 }).get();
 
                 console.log('Selected Seats:', selectedSeats);
-                // Now you can use the selectedSeats data for further processing
             });
 
             $.ajax({
                 url: "{% url 'fetch_booked_seats' %}",
                 type: 'GET',
-                data: { train_id: train_id, seat_class:seat_class, departure_date:doj,},
+                data: { train_id: train_id, seat_class:seat_class, departure_date:doj},
                 success: function(response) {
                     var bookedSeats = response.booked_seats;
                     console.log(bookedSeats)
@@ -179,7 +184,7 @@
             }
             $('#proceed').on('click', function () {
                 if (selectedSeats.length > 0 && selectedSeats.length <= 4) {
-                    var url = "{% url 'booked_seats' %}?selectedSeats=" + selectedSeats.join(',');
+                    var url = "{% url 'booked_seats' %}?selectedSeats=" + selectedSeats.join(',')+"&seatClass=" +seat_class+"&trainID="+train_id+"&from="+from_station+"&to="+to_station+"&doj="+doj;
                     window.location.href = url;
                 }
             })

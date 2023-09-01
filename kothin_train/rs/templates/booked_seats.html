@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 {% block body %}
 <div class='container-fluid'>
+    <h1>{{seat_class}}</h1>
     {% for seat in selected_seats %}
     <h1>{{seat}}</h1>
     {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit"> Proceed </button>
+    </form>
 </div>
 {% endblock body %}
