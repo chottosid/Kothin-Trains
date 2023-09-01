@@ -4,11 +4,11 @@ const suggestionList = document.getElementById("suggestion-list-from");
 
 fromBox.addEventListener("input", () => {
     const query = fromBox.value.toLowerCase();  // Corrected fromBox.value
-
     // Clear previous suggestions
     suggestionList.innerHTML = "";
 
     if (query.length >= 2) {
+        console.log("hi");
         const filteredSuggestions = stations.filter(suggestion => suggestion.toLowerCase().startsWith(query));
         const maxSuggestions = 5;
 

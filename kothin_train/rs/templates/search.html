@@ -1,39 +1,47 @@
 {% extends 'base.html' %}
-{% block title %}Kothin Trains | Home {% endblock title %}Kothin Trains | Home
+{% block title %}Kothin Trains | Home{% endblock title %}
 {% block body %}
 {% load static %}
-<link rel="stylesheet" href="{%static '/style.css'%}">
-<div class="d-flex py-4 bg-body-tertiary">
-    <form action="" method="post" class="mx-auto">
-        {% csrf_token %}
-        <h2 class="py-3">Search Trains</h2>
-        <div class="mb-3">
-            <label for="from" class="form-label">From Station</label>
-            <input id="from" type="text" name="from" placeholder="From" required class="form-control">
-            <ul id="suggestion-list-from" class="">
-            </ul>
-        </div>
-        <div class="dropdown float-right mb-3">
-            <label for="to" class="form-label">To Station</label>
-            <input id="to" type="text" name="to" required placeholder="To" class="form-control">
-            <ul id="suggestion-list-to">
-            </ul>
-        </div>
-        <div class="form-group mb-3">
-            <small class="form-text text-muted">Date</small>
-            <input class="form-control custom-datepicker" required type="text" id="date" name="date"
-                style="width: 200px; background-color: white !important;">
-            <div class="dropdown float-right form-text">
-                <select class="form-control" name="class" required>
-                    <option hidden="" value="" class="form-text">Choose Class</option>
-                    <option>SNIGDHA</option>
-                    <option>S_CHAIR</option>
-                    <option>SHOVAN</option>
-                </select>
+<link rel="stylesheet" href="{% static '/style.css' %}">
+<style>
+    .bg-image {
+        background-image: url('{% static "train1.jpg" %}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100vh;
+    }
+</style>
+<div class="bg-image">
+    <div class="d-flex align-items-center py-4">
+        <form action="" method="post" class="mx-auto">
+            {% csrf_token %}
+            <h2 class="sr-only">Search Trains</h2>
+            <div class="illustration"></div><i class="icon ion-search"></i>
+            <small class="form-text text-light">Route</small>
+            <div class="dropdown float-left">
+                <input id="from" type="text" name="from" placeholder="FROM" required>
+                <ul id="suggestion-list-from">
+                </ul>
             </div>
-
-        </div>
-        <div class="mb-3">
+            <div class="dropdown float-right">
+                <input id="to" type="text" name="to" required placeholder="TO">
+                <ul id="suggestion-list-to">
+                </ul>
+            </div>
+            <div class="form-group">
+                <small class="form-text text-muted">Date</small>
+                <input class="form-control custom-datepicker" required type="text" id="date" name="date"
+                    style="width: 200px; background-color: white !important;">
+                <div class="dropdown float-right">
+                    <select class="form-control" name="class" required>
+                        <option hidden="" value="">Choose Class</option>
+                        <option>SNIGDHA</option>
+                        <option>S_CHAIR</option>
+                        <option>SHOVAN</option>
+                    </select>
+                </div>
+            </div>
             <small class="form-text text-left text-muted">Passengers</small>
             <input required class="form-control float-left" type="text" name="adult" placeholder="Adult" maxlength="1"
                 pattern="\d*" title="Input can be only numbers">
