@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from sslcommerz_lib import SSLCOMMERZ 
 from django.views.decorators.csrf import csrf_exempt
+import math
 
 # Create your views here.
 
@@ -131,29 +132,45 @@ def train_show(request):
     query = (
         """SELECT * 
         FROM "Train-Timetable" tt 
-        JOIN "Train" t ON t."Train ID" = tt."Train Id"
-        WHERE tt."Station Id" = %s
-        AND tt."Direction" = %s
+        JOIN "Train" t ON t."Train ID" = tt."Train ID"
+        WHERE tt."From Station Name" =%s
+        AND tt."To Station Name" = %s
         AND TRUNC(tt."Departure Time") = TO_DATE(%s, 'YYYY-MM-DD')
         AND tt."Departure Time" > SYSTIMESTAMP """
     )
-    cursor.execute(query,(from_station_id,to_station,date_user));
+    cursor.execute(query,(from_station,to_station,date_user));
     res=cursor.fetchall()
+    query2=(
+        """SELECT SHOVAN,S_CHAIR,SNIGDHA
+        FROM "Cost"
+        WHERE "Train ID"=%s and
+        "FromStation Name"=%s AND
+        "ToStation Name"=%s """
+    )
     cursor.close();
     formatted_res=[]
     for row in res:
-        fr=[] #id+train name,start station, start time, end station, end time,shovan,s_chair,snigdha,id,date
-        fr.append(str(row[5])+" ("+str(row[0])+")")
+        print(row)
+        fr=[] #id+train name,start station, start time, end station, end time,shovan,s_chair,snigdha,id,date,cost1,cost2,cost3
+        fr.append(str(row[6])+" ("+str(row[0])+")")
         fr.append(from_station)
-        formatted_departure_time = row[2].strftime('%d %b, %I:%M %p')
+        formatted_departure_time = row[3].strftime('%d %b, %I:%M %p')
         fr.append(formatted_departure_time)
-        fr.append(row[3])
-        fr.append('')
-        fr.append(row[6])
-        fr.append(row[7])
-        fr.append(row[8])
+        fr.append(to_station)
+        formatted_arrival_time = row[4].strftime('%d %b, %I:%M %p')
+        fr.append(formatted_arrival_time)
+        fr.append(50)
+        fr.append(50)
+        fr.append(50)
         fr.append(row[0])
-        fr.append(row[2].date().strftime('%Y-%m-%d'))
+        fr.append(row[3].date().strftime('%Y-%m-%d'))
+        cursor=connection.cursor()
+        cursor.execute(query2,(int(row[0]),from_station,to_station))
+        res2=cursor.fetchall()
+        cursor.close()
+        fr.append(res2[0][0])
+        fr.append(res2[0][1])
+        fr.append(res2[0][2])
         formatted_res.append(fr)
 
     context['train_res']=formatted_res
@@ -171,13 +188,32 @@ def booked_seats(request):
     doj=request.GET.get('doj')
     fromid=get_station_id(from_station)
     toid=get_station_id(to_station)
-
+    cost=0
+    query=(
+        """SELECT SHOVAN,S_CHAIR,SNIGDHA
+        FROM "Cost"
+        WHERE "Train ID"=%s AND
+        "FromStation Name"=%s AND
+        "ToStation Name"=%s """
+    )
+    cursor=connection.cursor()
+    cursor.execute(query,(train_id,from_station,to_station))
+    res=cursor.fetchall()
+    if seatClass=='Snigdha':
+        cost=res[0][2]
+    elif seatClass=='Shovan':
+        cost=res[0][0]
+    else:
+        cost=res[0][1]
+        cost=cost+cost*15/100
+        cost=math.ceil(cost)
+    total=cost*len(selected_seats)
     if request.method=='POST':
         base_url = request.build_absolute_uri('/')[:-1]
         settings = { 'store_id': 'shoho64ef8f4171208', 'store_pass': 'shoho64ef8f4171208@ssl', 'issandbox': True }
         sslcommez = SSLCOMMERZ(settings)
         post_body = {}
-        post_body['total_amount'] = 200
+        post_body['total_amount'] = total
         post_body['currency'] = "BDT"
         post_body['tran_id'] = "1111"
         post_body['success_url'] = f"{base_url}/success"
@@ -305,3 +341,6 @@ def get_station_id(name):
     id = cursor.callfunc("getID", int,[name])
     cursor.close()
     return id
+
+def purchase_history():
+    pass;

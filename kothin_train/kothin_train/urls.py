@@ -33,4 +33,5 @@ urlpatterns = [
     path('success',rs_views.success,name='success'),
     path('failed',rs_views.failed,name='failed'),
     path('verify',rs_views.ipn_handler,name='verify'),
+    path('purchase_history',rs_views.purchase_history,name='purchase_history'),
 ]

@@ -40,8 +40,18 @@
                     </li>
                 </ul>
                 {% if request.session.user_data.name %}
-                <h5 class="navbar-text px-5">{{request.session.user_data.name}}</h5>
-                <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+                <div class="navbar-text px-5">{{request.session.user_data.name}}</div>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        More
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="">Profile</a></li>
+                        <li><a class="dropdown-item" href="{%url 'purchase_history' %}">Purchase History</a></li>
+                        <li><a class="dropdown-item" href="">Logout</a></li>
+                    </ul>
+                </div>
                 {% endif %}
             </div>
         </div>
