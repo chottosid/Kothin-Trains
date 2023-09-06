@@ -18,7 +18,7 @@ body {
 
 /* Style the form container */
 .form-container {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(236, 11, 11, 0.9);
     border-radius: 8px;
     padding: 20px;
     width: 400px;
@@ -45,7 +45,7 @@ body {
 
 .form-control {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #e40909;
     border-radius: 4px;
     width: 100%;
     font-size: 16px;
