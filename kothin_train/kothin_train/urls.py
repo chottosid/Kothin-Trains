@@ -25,7 +25,6 @@ urlpatterns = [
     path('login',rs_views.login,name= 'login'),
     path('about',rs_views.about,name="about"),
     path('homepage',rs_views.homepage,name='homepage'),
-    path('test',rs_views.test,name='test'),
     path('logout',rs_views.log_out,name='logout'),
     path('train_show',rs_views.train_show,name='train_show'),
     path('booked_seats',rs_views.booked_seats,name='booked_seats'),
@@ -34,4 +33,5 @@ urlpatterns = [
     path('failed',rs_views.failed,name='failed'),
     path('verify',rs_views.ipn_handler,name='verify'),
     path('purchase_history',rs_views.purchase_history,name='purchase_history'),
+    path('profile',rs_views.profile,name='profile'),
 ]

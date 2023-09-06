@@ -8,19 +8,12 @@ from django.http import JsonResponse
 from sslcommerz_lib import SSLCOMMERZ 
 from django.views.decorators.csrf import csrf_exempt
 import math
-
-# Create your views here.
-
-def get_next_cardinal():
-    with connection.cursor() as cursor:
-        query =(
-            "SELECT COUNT(*) FROM R_USER"
-        )
-        cursor.execute(query)
-        user_count = int(cursor.fetchone()[0])
-        return user_count + 1
+from django.template.loader import render_to_string
 
 
+
+
+#function to process login
 def login(request):
     context={}
 
@@ -51,6 +44,8 @@ def login(request):
         
     return render(request, "login.html",context)
 
+
+#function to process the search page
 def homepage(request):
     context={}
 
@@ -66,6 +61,9 @@ def homepage(request):
     
     return render(request, "search.html",context)
 
+
+
+#function to process the reg page
 def registration(request):
     context={}
 
@@ -104,16 +102,20 @@ def registration(request):
             return redirect('login')  # Replace 'login' with the appropriate URL name
     return render(request,'registration.html',context)
 
+
+
+#function to process the about page
 def about(request):
     return render(request,'about.html')
 
-def test(request):
-    return render(request,'test.html')
 
+#function to process logout mechanism
 def log_out(request):
     logout(request)
     return redirect('login')
 
+
+#function to show list of all availabe trains when user clicks on search
 def train_show(request):
     context={}
 
@@ -173,13 +175,23 @@ def train_show(request):
         fr.append(res2[0][2])
         formatted_res.append(fr)
 
+
+    #important here, the context dictionary passes all necessary values for the template to render
+    #the values in context['train_res'] appear in
+    #id+train name,start station, start time, end station, end time,shovan,s_chair,snigdha,id,date,cost1,cost2,cost3
+    #example context['train_res'][0][1]= start station name of the first train on our search list, 
     context['train_res']=formatted_res
     context['from_station']=from_station
     context['to_station']=to_station
     context['doj']=date_user
     return render(request,'train_show.html',context)
 
+
+
+#after selecting a seat, this page is loaded which shows what seat and which seats have been selected
+#see the template to see how data was passed to template
 def booked_seats(request):
+
     selected_seats = request.GET.get('selectedSeats', '').split(',')
     seatClass=request.GET.get('seatClass','')
     train_id=request.GET.get('trainID','')
@@ -208,6 +220,8 @@ def booked_seats(request):
         cost=cost+cost*15/100
         cost=math.ceil(cost)
     total=cost*len(selected_seats)
+
+
     if request.method=='POST':
         base_url = request.build_absolute_uri('/')[:-1]
         settings = { 'store_id': 'shoho64ef8f4171208', 'store_pass': 'shoho64ef8f4171208@ssl', 'issandbox': True }
@@ -240,9 +254,48 @@ def booked_seats(request):
         #print(str(train_id)+"-"+str(fromid)+"-"+str(toid)+"-"+str(doj)+"-"+seatClass+"-"+",".join(selected_seats))
         return redirect(response['GatewayPageURL'])
     
+
+    #data passed to template to render
+    #see template for this page for more details
     context = {'train_id':train_id,'seat_class':seatClass,'selected_seats': selected_seats}
     return render(request,'booked_seats.html',context)
 
+
+
+
+#function to process purchase history page
+def purchase_history(request):
+    query=(
+        """SELECT "Reservation ID"
+        FROM "Reservation"
+        WHERE "User-ID"=%s """
+    )
+    cursor=connection.cursor()
+    id=int(request.session.get('user_data')['id'])
+    cursor.execute(query,(id,))
+    res=cursor.fetchall()
+    context={}
+    datas=[]
+    for row in res:
+        data={}
+        s=row[0].split('*')
+        data['train_id']=s[0]
+        data['from_station']=s[1]
+        data['to_station']=s[2]
+        data['doj']=s[3]
+        data['class']=s[4]
+        data['seats']=s[5]
+        datas.append(data)
+    context['purchase']=datas
+    print(res)
+    return render(request,'history.html',context)
+
+#function to process profile view
+def profile(request):
+    return render(request,'profile.html')
+
+#function to fetch booked seats, no work needed here
+#functions from here need no work
 def fetch_booked_seats(request):
     train_id = request.GET.get('train_id')
     date_user=request.GET.get('departure_date')
@@ -258,6 +311,8 @@ def fetch_booked_seats(request):
         cursor.execute(query, (train_id,date_user,seat_class))
         booked_seats = [row[0] for row in cursor.fetchall()]
     return JsonResponse({'booked_seats': booked_seats})
+
+
 
 @csrf_exempt
 def success(request):
@@ -335,12 +390,17 @@ def ipn_handler(request):
         return HttpResponse(status=400)
     return HttpResponse(status=400)
 
-#returns station id
 def get_station_id(name):
     cursor=connection.cursor()
     id = cursor.callfunc("getID", int,[name])
     cursor.close()
     return id
 
-def purchase_history():
-    pass;
+def get_next_cardinal():
+    with connection.cursor() as cursor:
+        query =(
+            "SELECT COUNT(*) FROM R_USER"
+        )
+        cursor.execute(query)
+        user_count = int(cursor.fetchone()[0])
+        return user_count + 1

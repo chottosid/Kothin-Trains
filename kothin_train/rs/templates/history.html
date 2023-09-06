@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Kothin Trains | Purchase History{% endblock title %}
+{% block body %}
+
+{% if purchase %}
+<div class="container-fluid"></div>
+{% for p in purchase %}
+<div>
+    <!-- this is how you access each data -->
+    <h1>Train: {{p.train_id}}</h1>
+    <button type="button" class="download-button">Download</button>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% block custom_scripts %}
+{% endblock custom_scripts %}
+
+{% endblock body %}

@@ -1,0 +1,50 @@
+/* Custom CSS styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    /* Center align the content */
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    /* Left-align table content */
+}
+
+.ticket-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.ticket-table .label {
+    font-weight: bold;
+    color: #333;
+}
+
+.ticket-table .value {
+    color: #666;
+}
+
+/* Add background colors for alternating rows */
+.ticket-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

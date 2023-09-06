@@ -47,9 +47,9 @@
                         More
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="">Profile</a></li>
+                        <li><a class="dropdown-item" href="{%url 'profile' %}">Profile</a></li>
                         <li><a class="dropdown-item" href="{%url 'purchase_history' %}">Purchase History</a></li>
-                        <li><a class="dropdown-item" href="">Logout</a></li>
+                        <li><a class="dropdown-item" href="{%url 'logout' %}">Logout</a></li>
                     </ul>
                 </div>
                 {% endif %}
