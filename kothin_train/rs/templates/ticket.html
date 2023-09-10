@@ -3,48 +3,130 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket Information</title>
-    <link rel="stylesheet" type="text/css" href="style-ticket.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #007BFF;
+            /* Border color is blue */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Center content horizontally */
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            /* Add some spacing between the logo and the heading */
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #007BFF;
+            /* Heading color is blue */
+            margin-left: 10px;
+            /* Add spacing between logo and heading */
+        }
+
+        .logo {
+            width: 160px;
+            height: 100px;
+            margin-right: 10px;
+            /* Adjust the margin to shift the logo to the left */
+        }
+
+        .ticket-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .ticket-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .ticket-table .label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .ticket-table .value {
+            color: #007BFF;
+            /* Value color is blue */
+        }
+
+        .ticket-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Ticket Information</h1>
+        <div class="header">
+            <img src="rs/static/logo.png" alt="Logo" class="logo">
+            <h1>Ticket Information</h1>
+        </div>
         <table class="ticket-table">
             <tr>
                 <td class="label">Passenger Name:</td>
-                <td class="value">John Doe</td>
+                <td class="value">{{name}}</td>
             </tr>
             <tr>
-                <td class="label">Ticket Number:</td>
-                <td class="value">1234567890</td>
+                <td class="label">Email :</td>
+                <td class="value">{{email}}</td>
+            </tr>
+            <tr>
+                <td class="label">Phone Number :</td>
+                <td class="value">{{phone}}</td>
+            </tr>
+            <tr>
+                <td class="label">Train Number:</td>
+                <td class="value">{{train_id}}</td>
             </tr>
             <tr>
                 <td class="label">Departure Date:</td>
-                <td class="value">2023-09-15</td>
+                <td class="value">{{doj}}</td>
             </tr>
             <tr>
                 <td class="label">Departure Time:</td>
-                <td class="value">08:00 AM</td>
+                <td class="value">{{journey_time}}</td>
             </tr>
             <tr>
                 <td class="label">Seat Number:</td>
-                <td class="value">A23</td>
+                <td class="value">{{seats}}</td>
             </tr>
             <tr>
                 <td class="label">Train Name:</td>
-                <td class="value">Express Train</td>
+                <td class="value">{{train_name}}</td>
             </tr>
             <tr>
                 <td class="label">From Station:</td>
-                <td class="value">Station A</td>
+                <td class="value">{{from_station}}</td>
             </tr>
             <tr>
                 <td class="label">To Station:</td>
-                <td class="value">Station B</td>
+                <td class="value">{{to_station}}</td>
             </tr>
         </table>
+    </div>
     </div>
 </body>
 

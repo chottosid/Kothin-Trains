@@ -5,15 +5,72 @@
 {% if purchase %}
 <div class="container-fluid"></div>
 {% for p in purchase %}
-<div>
-    <!-- this is how you access each data -->
-    <h1>Train: {{p.train_id}}</h1>
-    <button type="button" class="download-button">Download</button>
+<div class="col-xs-12 px-0 pt-5">
+    <div class="row">
+        <div class="col-xs-3 col-sm-2 col-md-1">
+        </div>
+        <div class="col-xs-9 col-sm-10 col-md-11">
+            <div class="row">
+                <div class="col-xs-12 col-md-3 col-lg-4">
+                    <p>{{p.train_name}} [{{p.class}}]<br>PNR:</p>
+                </div>
+                <div class="col-xs-12 col-md-3 col-lg-3">
+                    <p>Booking Date: </p>
+                    <p>{{p.dor}}</p>
+                </div>
+                <div class="col-xs-12 col-md-3 col-lg-3">
+                    <p>Journey Date: </p>
+                    <p>{{p.doj}}, {{p.journey_time}}</p>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2 text-right">
+                    <button class="btn btn-secondary download-button" type="submit" data-train_name="{{p.train_name}}"
+                        data-train_id="{{p.train_id}}" data-doj="{{p.doj}}" data-from_station="{{p.from_station}}"
+                        data-to_station="{{p.to_station}}" data-class="{{p.class}}" data-seats="{{p.seats}}"
+                        data-dor="{{p.dor}}" data-journey_time="{{p.journey_time}}">Download Ticket</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endfor %}
 </div>
 {% endif %}
-{% block custom_scripts %}
-{% endblock custom_scripts %}
 
 {% endblock body %}
+{% block custom_scripts %}
+<script>
+    $(document).ready(function () {
+        $('.download-button').on('click', function () {
+            var train_name = $(this).data('train_name');
+            var train_id = $(this).data('train_id');
+            var doj = $(this).data('doj');
+            var from_station = $(this).data('from_station');
+            var to_station = $(this).data('to_station');
+            var sclass = $(this).data('class');
+            var seats = $(this).data('seats');
+            var dor = $(this).data('dor');
+            var journey_time = $(this).data('journey_time')
+            console.log(train_name,train_id,doj,from_station,to_station,sclass,seats,dor,journey_time);
+            $.ajax({
+                url: "generate",
+                type: 'GET',
+                data: { train_id: train_id, train_name: train_name, doj: doj, from_station: from_station, to_station: to_station, class: sclass, seats: seats, dor: dor, journey_time: journey_time },
+                success: function (response) {
+                    // Handle the response, which should be the PDF download
+                    // Create a temporary link to initiate the download
+                    const blob = new Blob([response]);
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'ticket.pdf';
+                    link.click();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle any errors that occur during the AJAX request
+                    console.error('Error:', textStatus, errorThrown);
+                }
+            });
+        });
+    });
+</script>
+{% endblock custom_scripts %}

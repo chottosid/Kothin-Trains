@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 {% block body %}
-<div class='container-fluid'>
-    <h1>{{seat_class}}</h1>
-    {% for seat in selected_seats %}
-    <h1>{{seat}}</h1>
-    {% endfor %}
+<div class='container-fluid d-flex flex-column justify-content-center align-content-center text-center'>
+    <h1>Booked Seats</h1>
+    <h2>Train Name: {{train_name}}</h2>
+    <h2>From Station : {{from_station}}</h2>
+    <h2>To Station : {{to_station}}</h2>
+    <h2>Seat Class : {{seat_class}}</h2>
+    <h2>Seats Selected :
+        {% for seat in selected_seats %}
+        {{seat}}
+        {% endfor %}
+    </h2>
+    <h2>Date Of Journey : {{doj}}</h2>
+    <h2>Total Fare : {{total}}</h2>
     <form method="post">
         {% csrf_token %}
         <button type="submit"> Proceed </button>

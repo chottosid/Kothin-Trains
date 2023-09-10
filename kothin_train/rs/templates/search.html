@@ -19,12 +19,12 @@
             <h2 class="sr-only">Search Trains</h2>
             <div class="illustration"></div><i class="icon ion-search"></i>
             <small class="form-text text-light">Route</small>
-            <div class="dropdown float-left">
+            <div class="dropdown1 float-left">
                 <input id="from" type="text" name="from" placeholder="FROM" required>
                 <ul id="suggestion-list-from">
                 </ul>
             </div>
-            <div class="dropdown float-right">
+            <div class="dropdown1 float-right">
                 <input id="to" type="text" name="to" required placeholder="TO">
                 <ul id="suggestion-list-to">
                 </ul>
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <small class="form-text text-muted">Date</small>
                 <input class="form-control custom-datepicker" required type="text" id="date" name="date"
-                    style="width: 200px; background-color: white !important;">
+                    style="width: 210px; background-color: white !important;">
                 <div class="dropdown float-right">
                     <select class="form-control" name="class" required>
                         <option hidden="" value="">Choose Class</option>
@@ -52,13 +52,13 @@
                 <label class="float-left form-text">*Maximum 4 seats can be issued</label>
             </div>
             <div class="d-flex justify-content-center">
-                <button id="find-trains" class="btn btn-primary btn-block text-center px-4" type="submit">Find</button>
+                <button id="find-trains" class="btn1 btn-primary1 btn-block text-center px-4" type="submit">Find</button>
             </div>
-        </div>
+    </div>
     </form>
 </div>
 {% endblock body %}
-{% block cutsom_scripts %}
+{% block custom_scripts %}
 <script>
     $(document).ready(function () {
         var today = new Date();
@@ -73,4 +73,4 @@
     });
 </script>
 <script src="{% static 'searchres.js' %}"></script>
-{% endblock cutsom_scripts %}
+{% endblock custom_scripts %}

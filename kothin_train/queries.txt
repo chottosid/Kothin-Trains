@@ -1,0 +1,210 @@
+
+
+1. SELECT *  
+             FROM R_USER  
+             WHERE E_MAIL=%s  
+             AND PASSWORD=%s  
+
+2. SELECT NID  
+             FROM R_USER  
+             WHERE NID =%s  
+3.
+ INSERT INTO R_USER (user_id,first_name, last_name, gender, e_mail, nid, house_no,road_no,zip_code,city, contact, password) 
+                 VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s) 
+4.
+   SELECT * 
+        FROM  Train-Timetable  tt 
+        JOIN  Train  t ON t. Train ID  = tt. Train ID 
+        WHERE tt. From Station Name  =%s
+        AND tt. To Station Name  = %s
+        AND TRUNC(tt. Departure Time ) = TO_DATE(%s, 'YYYY-MM-DD')
+        AND tt. Departure Time  > CURRENT_TIMESTAMP
+        ORDER BY tt. Departure Time     
+5.
+   SELECT SHOVAN,S_CHAIR,SNIGDHA
+        FROM  Cost 
+        WHERE  Train ID =%s and
+         FromStation Name =%s AND
+         ToStation Name =%s    
+6.
+   SELECT SHOVAN,S_CHAIR,SNIGDHA
+        FROM  Cost 
+        WHERE  Train ID =%s AND
+         FromStation Name =%s AND
+         ToStation Name =%s    
+7.
+   SELECT  Reservation ID , Date of Reservation 
+        FROM  Reservation 
+        WHERE  User-ID =%s    
+8.
+   SELECT  Departure Time 
+        FROM  Train-Timetable 
+        WHERE  Train ID =%s and
+         From Station Name =%s AND
+         To Station Name =%s    
+9.
+   SELECT FIRST_NAME,LAST_NAME,GENDER,E_MAIL,NID,HOUSE_NO,ROAD_NO,CITY,ZIP_CODE, CONTACT FROM  R_USER 
+        WHERE USER_ID=%s    
+10.
+   SELECT  Seat No 
+                from  Reserved-seat 
+                WHERE  Train ID =%s
+                and  Departure Date =to_date(%s,'YYYY-MM-DD') 
+                and  Class =%s    
+11.
+   INSERT INTO  C##KOTHIN_TRAIN . Reservation 
+                ( Reservation ID ,  Date of Reservation ,  Date of Journey ,  No. of Tickets ,  Class ,  From Station ,  To Station ,  User-ID ,  Payment ID )
+                VALUES (%s, SYSTIMESTAMP, TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s, %s, %s, %s)    
+12.
+   INSERT INTO  C##KOTHIN_TRAIN . Reserved-seat  ( Train ID ,  From Station ID ,  To Station ID ,  Departure Date ,  Seat No ,  User ID ,  Class ) 
+                    VALUES (%s, %s, %s, TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s)    
+                )
+13.
+ SELECT COUNT(*) FROM R_USER 
+14.
+ SELECT PASSWORD  
+             FROM R_USER  
+             WHERE USER_ID=%s  
+
+15.
+ UPDATE R_USER  
+                 SET PASSWORD=%s  
+                 WHERE USER_ID=%s  
+16. CREATE OR REPLACE PROCEDURE cleanup_train_timetable IS
+BEGIN
+    DELETE FROM "C##KOTHIN_TRAIN"."Train-Timetable"
+    WHERE "Departure Time" <= SYSTIMESTAMP;
+    COMMIT;
+END;
+
+17.
+CREATE OR REPLACE FUNCTION getID(fr in VARCHAR2) return number IS
+	id number;
+BEGIN
+	id:=-1;
+	for e in (SELECT * from "Station") LOOP
+		if e."Name"=fr THEN
+			id:=e."Station ID";
+		end if;
+	END LOOP;
+	return id;
+end;
+18.
+CREATE OR REPLACE FUNCTION getstation(id IN NUMBER) RETURN VARCHAR2 IS
+  name_ VARCHAR2(100);
+BEGIN
+  SELECT "Name" INTO name_ FROM "Station" WHERE "Station ID" = id;
+  RETURN name_;
+END;
+19.
+CREATE OR REPLACE FUNCTION gettrainname(id IN NUMBER) RETURN VARCHAR2 IS
+  name_ VARCHAR2(100);
+BEGIN
+  SELECT "Name" INTO name_ FROM "Train" WHERE "Train ID" = id;
+  RETURN name_;
+END;
+20.
+CREATE OR REPLACE FUNCTION split_string(input_string IN VARCHAR2, delimiter IN VARCHAR2)
+  RETURN SYS.ODCIVARCHAR2LIST PIPELINED
+AS
+  idx PLS_INTEGER := 1;
+  start_idx PLS_INTEGER := 1;
+  end_idx PLS_INTEGER;
+BEGIN
+  LOOP
+    -- Find the next occurrence of the delimiter
+    end_idx := INSTR(input_string, delimiter, start_idx);
+
+    -- If the delimiter is not found, exit the loop
+    IF end_idx = 0 THEN
+      EXIT;
+    END IF;
+
+    -- Extract the substring and pipe it
+    PIPE ROW (SUBSTR(input_string, start_idx, end_idx - start_idx));
+
+    -- Update the start index for the next iteration
+    start_idx := end_idx + LENGTH(delimiter);
+  END LOOP;
+
+  -- Pipe the remaining part of the string
+  PIPE ROW (SUBSTR(input_string, start_idx));
+
+  RETURN;
+END split_string;
+21.
+DECLARE
+   -- Declare a collection variable to store the split seats
+   split_seats SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST();
+   train_id NUMBER;
+   from_station_id NUMBER;
+   to_station_id NUMBER;
+   doj DATE;
+   s_class VARCHAR2(20);
+   seats VARCHAR2(100);
+   from_station VARCHAR2(100);
+   to_station VARCHAR2(100);
+	 user_id NUMBER;
+   -- Declare a collection variable to store the split seats again
+   split_seats_again SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST();
+BEGIN
+   -- Call the split_string function to split the seats string by comma delimiter
+   SELECT column_value BULK COLLECT INTO split_seats
+   FROM TABLE(split_string(:new."Reservation ID", '*'));
+
+   -- Assign the elements from the collection to variables
+	 user_id := :new."User-ID";
+   train_id := TO_NUMBER(split_seats(1));
+   from_station_id := TO_NUMBER(split_seats(2));
+   to_station_id := TO_NUMBER(split_seats(3));
+   doj := TO_DATE(split_seats(4), 'YYYY-MM-DD');
+   s_class := split_seats(5);
+   seats := split_seats(6); -- Assuming seats is a string
+   from_station := getstation(from_station_id);
+   to_station := getstation(to_station_id);
+	 
+   -- Split the seats variable again and store the result in the second collection
+   SELECT column_value BULK COLLECT INTO split_seats_again
+   FROM TABLE(split_string(seats, ','));
+	 FOR i IN 1..split_seats_again.COUNT LOOP
+      -- Access and use the current element
+				INSERT INTO "C##KOTHIN_TRAIN"."Reserved-seat" (
+					"Train ID",
+					"From Station ID",
+					"To Station ID",
+					"Departure Date",
+					"Seat No",
+					"User ID",
+					"Class"
+				) VALUES (
+					train_id,      -- Replace with the actual Train ID value
+					from_station_id,  -- Replace with the actual From Station ID value
+					to_station_id,    -- Replace with the actual To Station ID value
+					doj,   -- Replace with the actual Departure Date value
+					split_seats_again(i),          -- Replace with the actual Seat No value
+					user_id,          -- Replace with the actual User ID value
+					s_class             -- Replace with the actual Class value
+				);
+   END LOOP;
+END;
+
+22.
+BEGIN
+    :NEW.FIRST_NAME := INITCAP(:NEW.FIRST_NAME);
+    :NEW.LAST_NAME := INITCAP(:NEW.LAST_NAME);
+END;
+23.
+CREATE OR REPLACE FUNCTION searchuser(nid_g IN VARCHAR2) RETURN NUMBER IS
+   id NUMBER := -1; 
+BEGIN
+   SELECT "USER_ID" INTO id
+   FROM "R_USER"
+   WHERE "NID" = nid_g;
+   RETURN id;
+EXCEPTION
+   WHEN NO_DATA_FOUND THEN
+      RETURN id;
+END;
+/
+
+

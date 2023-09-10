@@ -34,4 +34,7 @@ urlpatterns = [
     path('verify',rs_views.ipn_handler,name='verify'),
     path('purchase_history',rs_views.purchase_history,name='purchase_history'),
     path('profile',rs_views.profile,name='profile'),
+    path('generate',rs_views.generateTicket,name='generate'),
+    path('contact',rs_views.contact,name='contact'),
+    path('changepass',rs_views.changepass,name='changepass'),
 ]

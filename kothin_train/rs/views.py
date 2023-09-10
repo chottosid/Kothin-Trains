@@ -1,17 +1,24 @@
+from io import BytesIO
+import json
+import tempfile
 from django.shortcuts import *
 from django.db import connection
 from django.contrib.auth import *
 from django.urls import *
-from datetime import date
+import datetime
 from django.contrib import messages
 from django.http import JsonResponse
 from sslcommerz_lib import SSLCOMMERZ 
 from django.views.decorators.csrf import csrf_exempt
 import math
 from django.template.loader import render_to_string
-
-
-
+from django.template.loader import get_template
+from django.http import HttpResponse
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+from django.utils.safestring import mark_safe
+import cx_Oracle
+from django.utils import timezone
 
 #function to process login
 def login(request):
@@ -45,9 +52,14 @@ def login(request):
     return render(request, "login.html",context)
 
 
+
+
 #function to process the search page
 def homepage(request):
     context={}
+
+    current_timezone = timezone.get_current_timezone()
+    print("Django App Current Timezone:", current_timezone)
 
     if request.method == 'POST':
         from_station = request.POST.get('from')
@@ -60,6 +72,9 @@ def homepage(request):
         return redirect(train_show_url)
     
     return render(request, "search.html",context)
+
+
+
 
 
 
@@ -104,15 +119,24 @@ def registration(request):
 
 
 
+
+
+
 #function to process the about page
 def about(request):
     return render(request,'about.html')
+
+
+
 
 
 #function to process logout mechanism
 def log_out(request):
     logout(request)
     return redirect('login')
+
+
+
 
 
 #function to show list of all availabe trains when user clicks on search
@@ -123,7 +147,7 @@ def train_show(request):
     to_station = request.GET.get('to').strip()
     date_user = request.GET.get('date').strip()
     try:
-        date_user = date.fromisoformat(date_user)  # Convert the string to a date object
+        date_user = datetime.date.fromisoformat(date_user)  # Convert the string to a date object
         date_user = date_user.strftime('%Y-%m-%d')
     except ValueError:
         # Handle invalid date_user format here
@@ -138,9 +162,11 @@ def train_show(request):
         WHERE tt."From Station Name" =%s
         AND tt."To Station Name" = %s
         AND TRUNC(tt."Departure Time") = TO_DATE(%s, 'YYYY-MM-DD')
-        AND tt."Departure Time" > SYSTIMESTAMP """
+        AND tt."Departure Time" > CURRENT_TIMESTAMP
+        ORDER BY tt."Departure Time" """
     )
-    cursor.execute(query,(from_station,to_station,date_user));
+    #print(query,(from_station,to_station,date_user))
+    cursor.execute(query,(from_station,to_station,date_user))
     res=cursor.fetchall()
     query2=(
         """SELECT SHOVAN,S_CHAIR,SNIGDHA
@@ -149,10 +175,9 @@ def train_show(request):
         "FromStation Name"=%s AND
         "ToStation Name"=%s """
     )
-    cursor.close();
+    cursor.close()
     formatted_res=[]
     for row in res:
-        print(row)
         fr=[] #id+train name,start station, start time, end station, end time,shovan,s_chair,snigdha,id,date,cost1,cost2,cost3
         fr.append(str(row[6])+" ("+str(row[0])+")")
         fr.append(from_station)
@@ -161,6 +186,12 @@ def train_show(request):
         fr.append(to_station)
         formatted_arrival_time = row[4].strftime('%d %b, %I:%M %p')
         fr.append(formatted_arrival_time)
+        time_difference = row[4] - row[3]
+        hours, seconds = divmod(time_difference.seconds, 3600)
+        minutes = seconds // 60
+
+        result_string = f"{hours}h {minutes}m"
+
         fr.append(50)
         fr.append(50)
         fr.append(50)
@@ -173,6 +204,7 @@ def train_show(request):
         fr.append(res2[0][0])
         fr.append(res2[0][1])
         fr.append(res2[0][2])
+        fr.append(result_string)
         formatted_res.append(fr)
 
 
@@ -185,6 +217,8 @@ def train_show(request):
     context['to_station']=to_station
     context['doj']=date_user
     return render(request,'train_show.html',context)
+
+
 
 
 
@@ -249,16 +283,20 @@ def booked_seats(request):
         post_body['product_profile'] = "general"
         post_body['value_a'] = request.session.get('user_data')['id'] # USER ID
         post_body['value_b'] = str(train_id)+"*"+str(fromid)+"*"+str(toid)+"*"+str(doj)+"*"+seatClass+"*"+",".join(selected_seats);
+        post_body['value_c'] = str(datetime.datetime.now()).split(" ")[1].split(".")[0]
         response = sslcommez.createSession(post_body)
         #print(response)
         #print(str(train_id)+"-"+str(fromid)+"-"+str(toid)+"-"+str(doj)+"-"+seatClass+"-"+",".join(selected_seats))
         return redirect(response['GatewayPageURL'])
-    
 
     #data passed to template to render
     #see template for this page for more details
-    context = {'train_id':train_id,'seat_class':seatClass,'selected_seats': selected_seats}
+    train_name=getTrainName(int(train_id))
+
+    context = {'train_id':train_id,'train_name':train_name,'seat_class':seatClass,'selected_seats': selected_seats,'from_station':from_station,'to_station':to_station,'doj':doj,'cost':cost,'total':total}
     return render(request,'booked_seats.html',context)
+
+
 
 
 
@@ -266,7 +304,7 @@ def booked_seats(request):
 #function to process purchase history page
 def purchase_history(request):
     query=(
-        """SELECT "Reservation ID"
+        """SELECT "Reservation ID","Date of Reservation"
         FROM "Reservation"
         WHERE "User-ID"=%s """
     )
@@ -280,19 +318,95 @@ def purchase_history(request):
         data={}
         s=row[0].split('*')
         data['train_id']=s[0]
-        data['from_station']=s[1]
-        data['to_station']=s[2]
+        data['train_name']=getTrainName(int(s[0]))
+        data['from_station']=getStation(int(s[1]))
+        data['to_station']=getStation(int(s[2]))
         data['doj']=s[3]
         data['class']=s[4]
         data['seats']=s[5]
+        data['dor']=row[1].strftime('%d %b, %I:%M %p')
+        data['journey_time']=getJourneytime(s[0],data['from_station'],data['to_station'])
         datas.append(data)
     context['purchase']=datas
-    print(res)
     return render(request,'history.html',context)
+
+def getJourneytime(id,fr,to):
+    query=(
+        """SELECT "Departure Time"
+        FROM "Train-Timetable"
+        WHERE "Train ID"=%s and
+        "From Station Name"=%s AND
+        "To Station Name"=%s """
+    )
+    cursor=connection.cursor()
+    cursor.execute(query,(id,fr,to,))
+    res=cursor.fetchall()
+    timestamp_object = res[0][0]
+    time_part = timestamp_object.strftime('%H:%M:%S')
+    #print(time_part)
+    return time_part  # Extract the "Departure Time" from the result
+
+def generateTicket(request):
+    train_id = request.GET.get('train_id')
+    doj = request.GET.get('doj')
+    seat_class = request.GET.get('class')
+    train_name = request.GET.get('train_name')
+    from_station = request.GET.get('from_station')
+    to_station = request.GET.get('to_station')
+    seats = request.GET.get('seats')
+    journey_time=request.GET.get('journey_time')
+    context = {
+        'train_name': train_name,
+        'train_id': train_id,
+        'from_station': from_station,
+        'to_station': to_station,
+        'doj': doj,
+        'class': seat_class,
+        'seats': seats,
+        'name': request.session.get('user_data')['name'],
+        'email': request.session.get('user_data')['email'],
+        'phone': request.session.get('user_data')['phone'],
+        'journey_time':journey_time,
+    }
+    template = get_template('ticket.html')
+    html = template.render(context)
+
+    # Create a resnse object
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="ticket.pdf"'
+
+    # Create a PDF and attach it to the response
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
+    if not pdf.err:
+        return response
+
+    # If PDF generation fails, return an error response
+    return HttpResponse('PDF generation error.', content_type='text/plain')
 
 #function to process profile view
 def profile(request):
-    return render(request,'profile.html')
+    cursor=connection.cursor()
+    id=int(request.session.get('user_data')['id'])
+    query=(
+        """SELECT FIRST_NAME,LAST_NAME,GENDER,E_MAIL,NID,HOUSE_NO,ROAD_NO,CITY,ZIP_CODE, CONTACT FROM "R_USER"
+        WHERE USER_ID=%s """
+    )
+    cursor.execute(query,(id,))
+    res=cursor.fetchall()
+    cursor.close()
+    context={
+        'nid':res[0][4],
+        'house_no':res[0][5],
+        'road_no':res[0][6],
+        'city':res[0][7],
+        'zip_code':res[0][8],
+        'contact':res[0][9],
+    }
+    return render(request,'profile.html',context)
+
+
+
+
 
 #function to fetch booked seats, no work needed here
 #functions from here need no work
@@ -326,26 +440,26 @@ def success(request):
         tran_id = request.POST['tran_id']
         userid=request.POST['value_a']
         info=request.POST['value_b']
-
+        valc=request.POST['value_c']
         train_id, fromid, toid, doj, seat_class, selected_seats = info.split('*')
         selected_seats_list = selected_seats.split(',')
-        print(status)
-        print("-------------------")
-        print(info)
+        # print(status)
+        # print("-------------------")
+        # print(info)
         if status=='VALID':
             query = (
                 """INSERT INTO "C##KOTHIN_TRAIN"."Reservation"
                 ("Reservation ID", "Date of Reservation", "Date of Journey", "No. of Tickets", "Class", "From Station", "To Station", "User-ID", "Payment ID")
-                VALUES (%s, TO_DATE(%s, 'YYYY-MM-DD'), TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s, %s, %s, %s) """
+                VALUES (%s, SYSTIMESTAMP, TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s, %s, %s, %s) """
             )
             cursor=connection.cursor()
-            cursor.execute(query, (info, tran_date,doj, len(selected_seats_list), seat_class, fromid, toid, userid,tran_id))
-            query2 = (
-                    """INSERT INTO "C##KOTHIN_TRAIN"."Reserved-seat" ("Train ID", "From Station ID", "To Station ID", "Departure Date", "Seat No", "User ID", "Class") 
-                    VALUES (%s, %s, %s, TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s) """
-                )
-            for seat in selected_seats_list:
-                cursor.execute(query2,(train_id,fromid,toid,doj,seat,userid,seat_class))
+            cursor.execute(query, (info,doj, len(selected_seats_list), seat_class, fromid, toid, userid,tran_id))
+            # query2 = (
+            #         """INSERT INTO "C##KOTHIN_TRAIN"."Reserved-seat" ("Train ID", "From Station ID", "To Station ID", "Departure Date", "Seat No", "User ID", "Class") 
+            #         VALUES (%s, %s, %s, TO_DATE(%s, 'YYYY-MM-DD'), %s, %s, %s) """
+            #     )
+            # for seat in selected_seats_list:
+            #     cursor.execute(query2,(train_id,fromid,toid,doj,seat,userid,seat_class))
             cursor.close()
     return render(request,'confirm.html')
 
@@ -367,9 +481,9 @@ def ipn_handler(request):
 
         train_id, fromid, toid, doj, seat_class, selected_seats = info.split('*')
         selected_seats_list = selected_seats.split(',')
-        print(status)
-        print("-------------------")
-        print(info)
+        # print(status)
+        # print("-------------------")
+        # print(info)
         if status=='VALID':
             query = (
                 """INSERT INTO "C##KOTHIN_TRAIN"."Reservation"
@@ -404,3 +518,47 @@ def get_next_cardinal():
         cursor.execute(query)
         user_count = int(cursor.fetchone()[0])
         return user_count + 1
+
+def getStation(id):
+    cursor=connection.cursor()
+    name=cursor.callfunc("getstation",cx_Oracle.STRING,[id])
+    cursor.close()
+    return name
+
+def getTrainName(id):
+    cursor=connection.cursor()
+    name=cursor.callfunc("GETTRAINNAME",cx_Oracle.STRING,[id])
+    cursor.close()
+    return name
+
+def contact(request):
+    return render(request,'contact.html')
+
+def changepass(request):
+    if request.method=='POST':
+        oldpass=request.POST.get('old_password')
+        newpass=request.POST.get('new_password')
+        cursor=connection.cursor()
+        query=(
+            "SELECT PASSWORD "
+            "FROM R_USER "
+            "WHERE USER_ID=%s "
+            )
+        cursor.execute(query,(int(request.session.get('user_data')['id']),))
+        res=cursor.fetchall()
+        cursor.close()
+        if(res[0][0]!=oldpass):
+            messages.error(request,"Old password doesn't match")
+            return render(request,'changepass.html')
+        else:
+            cursor=connection.cursor()
+            query=(
+                "UPDATE R_USER "
+                "SET PASSWORD=%s "
+                "WHERE USER_ID=%s "
+            )
+            cursor.execute(query,(newpass,int(request.session.get('user_data')['id'])))
+            cursor.close()
+            messages.success(request,"Password changed successfully")
+            return redirect('profile')
+    return render(request,'changepass.html')

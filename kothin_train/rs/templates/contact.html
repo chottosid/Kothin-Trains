@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Kothin Trains | Contact Us{% endblock title %}
+{% block body %}
+{% load static %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+            <p>We most humbly welcome any feedback</p>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-3 text-center">
+            <div class="card">
+                <div class="card-header">
+                    <bold>Under the supervision of</bold>
+                </div>
+                <div class="card-body" style="height: 18rem;">
+                    <h5 class="card-title">Ishrat Jahan</h5>
+                    <p class="card-text">Lecturer</p>
+                    <p class="card-text">Department of CSE</p>
+                    <p class="card-text">Bangladesh University of Engineering and Technology</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <!-- Swarup's Card -->
+        <div class="col-md-6 offset-md-3 text-center">
+            <div class="card">
+                <img src="{%static 'swarup.jpg' %}" class="card-img-top mx-auto" style="width: 18rem;"
+                    alt="Swarup Sidharho Mondol">
+                <div class="card-body">
+                    <h5 class="card-title">Swarup Sidharho Mondol</h5>
+                    <p class="card-text">Student ID:2005100</p>
+                    <p class="card-text">CSE,BUET</p>
+                    <a href="mailto:swarupsidhartho@gmail.com" class="btn btn-primary">Email Swarup</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <!-- Arnab's Card -->
+        <div class="col-md-6 offset-md-3 text-center">
+            <div class="card">
+                <img src="{%static 'kabya.jpg' %}" class="card-img-top mx-auto" style="width: 18rem;"
+                    alt="Arnab Dey Kabya">
+                <div class="card-body">
+                    <h5 class="card-title">Arnab Dey Kabya</h5>
+                    <p class="card-text">Student ID:2005112</p>
+                    <p class="card-text">CSE,BUET</p>
+                    <a href="mailto:arnabdeykabya@gmail.com" class="btn btn-primary">Email Arnab</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

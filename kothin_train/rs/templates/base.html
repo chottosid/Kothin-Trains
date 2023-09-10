@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary " data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Kothin Train</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -36,12 +36,12 @@
                         <a class="nav-link" href="about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact_us">Contact Us</a>
+                        <a class="nav-link" href="contact">Contact Us</a>
                     </li>
                 </ul>
                 {% if request.session.user_data.name %}
                 <div class="navbar-text px-5">{{request.session.user_data.name}}</div>
-                <div class="dropdown">
+                <div class="dropdown dropstart">
                     <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         More
@@ -60,42 +60,22 @@
     {% block body %}{% endblock body %}
 
 
-    <div class=" container">
+    <div class="container">
         <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-3 py-5 my-5 border-top">
-            <div class="col mb-3">
-                <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32">
-                        <use xlink:href="#bootstrap"></use>
-                    </svg>
+            <div class="col d-flex justify-content-center">
+                <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none m-lg-4">
+                    <img src="{% static 'logo.png' %}" alt="logo.png" width="160" height="100">
                 </a>
-                <p class="text-body-secondary">© 2023</p>
             </div>
-            <div class="col mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
-                    </li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a>
-                    </li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a>
-                    </li>
-                </ul>
+            <div class="col d-flex justify-content-center">
+                <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none m-lg-4">
+                    <img src="{% static 'BUET_LOGO.png' %}" alt="logo.png" width="100" height="100">
+                </a>
             </div>
-
-            <div class="col mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
-                    </li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a>
-                    </li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a>
-                    </li>
-                </ul>
+            <div class="col d-flex justify-content-center">
+                <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none m-lg-4">
+                    <img src="{% static 'cse.png' %}" alt="logo.png" width="100" height="100">
+                </a>
             </div>
         </footer>
     </div>
@@ -110,7 +90,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    {% block cutsom_scripts %}{% endblock cutsom_scripts %}
+    {% block custom_scripts %}
+    {% endblock custom_scripts %}
 </body>
 
 </html>
